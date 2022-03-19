@@ -34,8 +34,7 @@ def translate(file_path):
 
 
 def main():
-    # file_path = create_parser().file_path
-    file_path = "/home/miloszun/AISDI/aisdi/morse_code/plik.txt"
+    file_path = create_parser().file_path
     print(translate(file_path))
 
 main()

@@ -1,4 +1,4 @@
-from morse import translate
+from morse_code import translate
 import io
 
 def test_one_word(benchmark):

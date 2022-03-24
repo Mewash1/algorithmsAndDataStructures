@@ -8,6 +8,7 @@ def bubble_sort(unsorted_list):
                 unsorted_list[i], unsorted_list[i + 1] = unsorted_list[i + 1], unsorted_list[i]
                 swap = True
         partition += 1
+        print(swap)
     return unsorted_list
 
 def bubble_sort2(unsorted_list):

@@ -1,7 +1,5 @@
 
 def merge(array1: list, array2: list) -> list:
-    id1 = 0
-    id2 = 0
     array = []
     length = len(array1)
     for i in range(length*2):
@@ -28,9 +26,11 @@ def merge(array1: list, array2: list) -> list:
 
 
 def merge_sort(array: list) -> list:
+    odd_offset = 1 if len(array) % 2 == 1 else 0
     q = len(array)//2
-    array1 = merge_sort(array[:q])
-    array2 = merge_sort(array[q:])
-    array = merge(array1, array2)
+    if len(array) != 1:
+        array1 = merge_sort(array[:q+odd_offset])
+        array2 = merge_sort(array[q+odd_offset:])
+        array = merge(array1, array2)
     return array
 

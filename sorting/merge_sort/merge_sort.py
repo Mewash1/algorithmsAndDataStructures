@@ -34,3 +34,5 @@ def merge_sort(array: list) -> list:
         array = merge(array1, array2)
     return array
 
+
+

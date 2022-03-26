@@ -7,6 +7,13 @@ with open("pan-tadeusz.txt", 'r', encoding='utf-8') as file:
    pan_tadeusz = turn_file_into_list(file)
 
 
+def test_merge_sort_words():
+    unsorted_array = pan_tadeusz[:10]
+    sorted_array = merge_sort(unsorted_array)
+    assert sorted_array == ['Adam','Księga', 'Litwie', 'Mickiewicz', 'Pan',
+    'Tadeusz', 'czyli', 'na', 'ostatni', 'zajazd']
+
+
 def test_merge():
     array1 = [1, 2, 4, 6]
     array2 = [2, 4, 6, 8]

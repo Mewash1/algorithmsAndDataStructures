@@ -1,6 +1,6 @@
 import json
 from matplotlib import pyplot as plt
-
+import os
 
 class Sortings:
    'Helps with detaling results'
@@ -43,8 +43,15 @@ def detail_results(whole_results: dict) -> dict:
    return results
 
 
+def creating_dir_for_stats():
+   name = 'statistics'
+   if not os.path.exists(name):
+        os.mkdir(name)
+
+
 def plot_reuslts(results: dict):
    'Plots statistics'
+   creating_dir_for_stats()
    amount = [1000, 2000, 5000, 7000, 10000]
    ticks = [1000, 2000, 3000, 4000, 5000, 6000,
    7000, 8000, 9000, 10000]
@@ -54,7 +61,7 @@ def plot_reuslts(results: dict):
       plt.title(name)
       plt.xlabel('nanoseconds')
       plt.ylabel('number of words')
-      plt.savefig(f'stats/{name}.png', format='png')
+      plt.savefig(f'statistics/{name}.png', format='png')
       plt.clf()
 
    for name, values in results.items():
@@ -64,13 +71,13 @@ def plot_reuslts(results: dict):
       plt.xlabel('nanoseconds')
       plt.ylabel('number of words')
       plt.legend()
-      plt.savefig(f'stats/sortings_compared.png', format='png')
-
+      plt.savefig(f'statistics/sortings_compared.png', format='png')
 
 
 def main():
    reuslts = open_results()
    plot_reuslts(reuslts)
+
 
 if __name__ == "__main__":
    main()

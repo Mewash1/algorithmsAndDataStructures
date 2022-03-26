@@ -1,15 +1,27 @@
-from bubble_sort.bubble_sort import bubble_sort, bubble_sort2
+from bubble_sort.bubble_sort import bubble_sort
 from file_comprehension import turn_file_into_list
+
 
 with open("pan-tadeusz.txt", 'r', encoding='utf-8') as file:
    pan_tadeusz = turn_file_into_list(file)
 
+def test_bubble_sort_words():
+    unsorted_array = pan_tadeusz[:10]
+    sorted_array = bubble_sort(unsorted_array)
+    assert sorted_array == ['Adam','Księga', 'Litwie', 'Mickiewicz', 'Pan',
+    'Tadeusz', 'czyli', 'na', 'ostatni', 'zajazd']
 
-# def test_1(benchmark):
-#     benchmark(bubble_sort, [3,5,1,9,6,2]) == [1,2,3,5,6,9]
 
-# def test_2(benchmark):
-#     benchmark(bubble_sort2, [3,5,1,9,6,2]) == [1,2,3,5,6,9]
+def test_bubble_sort_with_repetitions():
+    unsorted_array = [4, 3, 1, 5, 45, 54, 2345, 1, 4, 5, 6]
+    sorted_array = bubble_sort(unsorted_array)
+    assert sorted_array == [1, 1, 3, 4, 4, 5, 5, 6, 45, 54, 2345]
+
+
+def test_negative_numbers():
+    unsorted_array = [4, 3, 1, -5, 45, 54, 2345, -1, 4, 5, 6]
+    sorted_array = bubble_sort(unsorted_array)
+    assert sorted_array == [-5, -1, 1, 3, 4, 4, 5, 6, 45, 54, 2345]
 
 
 def test_bubble_sort_benchmark_1000(benchmark):
@@ -24,8 +36,9 @@ def test_bubble_sort_benchmark_5000(benchmark):
     benchmark(bubble_sort, pan_tadeusz[:5000])
 
 
-def test_bubble_sort_benchmark_700(benchmark):
+def test_bubble_sort_benchmark_7000(benchmark):
     benchmark(bubble_sort, pan_tadeusz[:7000])
+
 
 def test_bubble_sort_benchmark_10000(benchmark):
     benchmark(bubble_sort, pan_tadeusz[:10000])

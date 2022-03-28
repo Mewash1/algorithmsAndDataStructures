@@ -24,7 +24,6 @@ def merge(array1: list, array2: list) -> list:
     return array
 
 
-
 def merge_sort(array: list) -> list:
     odd_offset = 1 if len(array) % 2 == 1 else 0
     q = len(array)//2
@@ -33,6 +32,3 @@ def merge_sort(array: list) -> list:
         array2 = merge_sort(array[q+odd_offset:])
         array = merge(array1, array2)
     return array
-
-
-

@@ -1,9 +1,11 @@
 from quick_sort.quick_sort import quick_sort
 from file_comprehension import turn_file_into_list
-
+import sys
 
 with open("pan-tadeusz.txt", 'r', encoding='utf-8') as file:
    pan_tadeusz = turn_file_into_list(file)
+
+sys.setrecursionlimit(100000)
 
 def test_quick_sort_words():
     unsorted_array = pan_tadeusz[:10]

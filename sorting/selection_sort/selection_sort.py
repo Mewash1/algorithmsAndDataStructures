@@ -1,5 +1,3 @@
-
-
 def selection_sort(array: list) -> list:
     for id, second_element in enumerate(array):
         minimum_element = array[id]

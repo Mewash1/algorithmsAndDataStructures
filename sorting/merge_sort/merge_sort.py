@@ -2,25 +2,27 @@ def merge(array1: list, array2: list) -> list:
     array = []
     length_ar1 = len(array1)
     length_ar2 = len(array2)
+    id_ar1 = 0
+    id_ar2 = 0
     for i in range(length_ar1 + length_ar2):
-        if len(array1) != 0:
-            element_ar1 = array1[0]
+        if len(array1[id_ar1:]) != 0:
+            element_ar1 = array1[id_ar1:][0]
         else:
-            array += array2
+            array += array2[id_ar2:]
             break
 
-        if len(array2) != 0:
-            element_ar2 = array2[0]
+        if len(array2[id_ar2:]) != 0:
+            element_ar2 = array2[id_ar2:][0]
         else:
-            array += array1
+            array += array1[id_ar1:]
             break
 
         if element_ar1 <= element_ar2:
             array.append(element_ar1)
-            array1.pop(0)
+            id_ar1 += 1
         else:
             array.append(element_ar2)
-            array2.pop(0)
+            id_ar2 += 1
     return array
 
 

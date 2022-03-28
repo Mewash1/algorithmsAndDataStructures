@@ -57,20 +57,20 @@ def plot_reuslts(results: dict):
     ticks = [1000, 2000, 3000, 4000, 5000, 6000,
              7000, 8000, 9000, 10000]
     for name, values in results.items():
-        plt.plot(values, amount, 'o-')
-        plt.yticks(ticks)
+        plt.plot(amount, values, 'o-')
+        plt.xticks(ticks)
         plt.title(name)
-        plt.xlabel('nanoseconds')
-        plt.ylabel('number of words')
+        plt.ylabel('nanoseconds')
+        plt.xlabel('number of words')
         plt.savefig(f'statistics/{name}.png', format='png')
         plt.clf()
 
     for name, values in results.items():
-        plt.plot(values, amount, 'o-', label=name)
-        plt.yticks(ticks)
+        plt.plot(amount, values, 'o-', label=name)
+        plt.xticks(ticks)
         plt.title('Sortings compared')
-        plt.xlabel('nanoseconds')
-        plt.ylabel('number of words')
+        plt.ylabel('nanoseconds')
+        plt.xlabel('number of words')
         plt.legend()
         plt.savefig('statistics/sortings_compared.png', format='png')
 

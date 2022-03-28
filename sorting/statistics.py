@@ -4,7 +4,7 @@ import os
 
 
 class Sortings:
-    'Helps with detaling results'
+    '''Helps with detaling results'''
 
     def __init__(self) -> None:
         self._sortings = ['bubble', 'selection', 'merge', 'quick']
@@ -30,7 +30,7 @@ def read_results(handle) -> dict:
 
 
 def detail_results(whole_results: dict) -> dict:
-    'Details results from the base json sturct'
+    '''Details results from the base json sturct'''
     results = {}
     sortings = Sortings()
     for benchmark in whole_results['benchmarks']:
@@ -51,7 +51,7 @@ def creating_dir_for_stats():
 
 
 def plot_reuslts(results: dict):
-    'Plots statistics'
+    '''Plots statistics'''
     creating_dir_for_stats()
     amount = [1000, 2000, 5000, 7000, 10000]
     ticks = [1000, 2000, 3000, 4000, 5000, 6000,

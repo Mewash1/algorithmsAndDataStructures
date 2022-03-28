@@ -18,4 +18,4 @@ def turn_file_into_list(file_handle):
             new_word = remove_wrong_charaters_from_word(word)
             if len(new_word) != 0:
                 new_list.append(new_word)
-    return
+    return new_list

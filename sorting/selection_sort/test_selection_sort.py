@@ -3,13 +3,14 @@ from file_comprehension import turn_file_into_list
 
 
 with open("pan-tadeusz.txt", 'r', encoding='utf-8') as file:
-   pan_tadeusz = turn_file_into_list(file)
+    pan_tadeusz = turn_file_into_list(file)
+
 
 def test_selection_sort_words():
     unsorted_array = pan_tadeusz[:10]
     sorted_array = selection_sort(unsorted_array)
-    assert sorted_array == ['Adam','Księga', 'Litwie', 'Mickiewicz', 'Pan',
-    'Tadeusz', 'czyli', 'na', 'ostatni', 'zajazd']
+    assert sorted_array == ['Adam', 'Księga', 'Litwie', 'Mickiewicz', 'Pan',
+                            'Tadeusz', 'czyli', 'na', 'ostatni', 'zajazd']
 
 
 def test_selection_sort_with_repetitions():

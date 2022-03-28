@@ -1,25 +1,25 @@
-
 def merge(array1: list, array2: list) -> list:
     array = []
-    length = len(array1)
-    for i in range(length*2):
+    length_ar1 = len(array1)
+    length_ar2 = len(array2)
+    for i in range(length_ar1 + length_ar2):
         if len(array1) != 0:
-            el1 = array1[0]
+            element_ar1 = array1[0]
         else:
             array += array2
             break
 
         if len(array2) != 0:
-            el2 = array2[0]
+            element_ar2 = array2[0]
         else:
             array += array1
             break
 
-        if el1 <= el2:
-            array.append(el1)
+        if element_ar1 <= element_ar2:
+            array.append(element_ar1)
             array1.pop(0)
         else:
-            array.append(el2)
+            array.append(element_ar2)
             array2.pop(0)
     return array
 
@@ -27,7 +27,7 @@ def merge(array1: list, array2: list) -> list:
 def merge_sort(array: list) -> list:
     odd_offset = 1 if len(array) % 2 == 1 else 0
     q = len(array)//2
-    if len(array) != 1:
+    if len(array) != 1 and len(array) > 0:
         array1 = merge_sort(array[:q+odd_offset])
         array2 = merge_sort(array[q+odd_offset:])
         array = merge(array1, array2)

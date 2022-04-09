@@ -3,9 +3,5 @@ from binary_tree import (
 )
 
 def test_ehh():
-    a = 5
-
-
-date = [5, 4, 2, 6, 8]
-
-create_BT_loop(date)
+    data = [5, 4, 2, 6, 8]
+    root = create_BT_loop(data)

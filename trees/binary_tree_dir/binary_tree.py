@@ -1,5 +1,4 @@
 class Node:
-    # Bad declaration with None
     def __init__(self, data = None) -> None:
         self.key = data
         self.right = None

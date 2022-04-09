@@ -41,16 +41,23 @@ def search_BT(root: Node, key):
     return root
 
 
-def insert_nood_BT(node: Node, data):
+def insert_nood_BT(node: Node, data, used_data=list()):
     if node is None:
         node = Node(data)
 
     if node.key > data:
-        node.left = insert_nood_BT(node.left, data)
-    elif node.key < data:
-        node.right = insert_nood_BT(node.right, data)
+        if len(used_data) != 0:
+            used_data.pop()
+        node.left, used_data = insert_nood_BT(node.left, data)
+    elif node.key < data or (node.key == data and data in used_data):
+        if len(used_data) != 0:
+            used_data.pop()
+        node.right, used_data = insert_nood_BT(node.right, data)
 
-    return node
+    used_data.append(data)
+
+    return node, used_data
+
 
 # def print_tree(root: Node):
 #     if root is not None:

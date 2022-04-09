@@ -7,6 +7,7 @@ def test_ehh():
     data = [5, 4, 2, 6, 8, 8]
     root = create_BT_loop(data)
     insert_nood_BT(root, 7)
+    insert_nood_BT(root, 7)
     pass
 
 

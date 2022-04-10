@@ -1,4 +1,4 @@
-from binary_tree_dir.BST import BST
+from ..BST import BST
 
 
 def test_one():

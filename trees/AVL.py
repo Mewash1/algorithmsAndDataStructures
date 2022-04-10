@@ -1,5 +1,5 @@
-from binary_tree_dir.BST import BST 
-from binary_tree_dir.binary_tree import Node
+from .BST import BST 
+from .Node import Node
 
 
 class AVL(BST):

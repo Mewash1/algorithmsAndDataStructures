@@ -1,4 +1,4 @@
-from binary_tree_dir.binary_tree import Node
+from .Node import Node
 
 
 class BST:

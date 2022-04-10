@@ -122,9 +122,3 @@ class BST:
     def print_tree(self):
         root = self.root
         self._print_tree_recursive(root)
-
-data = [3, 4, 534, 2, 4, 5, 90, 7]
-
-bst = BST(data)
-
-bst.print_tree()

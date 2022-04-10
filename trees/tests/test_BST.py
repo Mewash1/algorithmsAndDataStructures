@@ -22,6 +22,7 @@ def test_calc_tree_height():
     tree = BST(data)
     assert tree.calc_tree_height(tree.root) == 3
 
+
 def test_traverse_inorder():
     data = [5, 4, 2, 6, 8, 8]
     tree = BST(data)
@@ -30,3 +31,12 @@ def test_traverse_inorder():
     for node in inorder_list:
         new_list.append(node.key)
     assert new_list == [2,4,5,6,8,8]
+
+
+def test_print():
+    data = [5, 4, 2, 6, 8, 8]
+    bst = BST(data)
+
+    root = bst.root
+
+    bst.print_tree(root)

@@ -1,10 +1,9 @@
-from .Node import Node
+from Node import Node
 
 
 class BST:
     def __init__(self, data) -> None:
         self.root = self.create_BT_loop(data)
-
 
     def create_BT(self, node: Node, data, used_data=None):
         used_data = [] if used_data is None else used_data
@@ -14,14 +13,14 @@ class BST:
         if node.key > data:
             used_data.pop()
             node.left, used_data = self.create_BT(node.left, data, used_data)
-        elif node.key < data or (node.key == data and data in used_data):
+        elif (node.key < data or (node.key == data and data in used_data) or
+              (node.key == data and node.left is not None)):
             used_data.pop()
             node.right, used_data = self.create_BT(node.right, data, used_data)
 
         used_data.append(data)
 
         return node, used_data
-
 
     def create_BT_loop(self, data):
         root = None
@@ -69,7 +68,6 @@ class BST:
         else:
             node.key = None
 
-
     def remove_node_BT(self, node: Node, key):
 
         nood_rm = self.search_BT(node, key)
@@ -97,8 +95,8 @@ class BST:
         left_height = self.calc_tree_height(node.left)
         right_height = self.calc_tree_height(node.right)
         return max(left_height, right_height) + 1
-    
-    def traverse_inorder(self, node, nodes_list):
+
+    def traverse_inorder(self, node, nodes_list=None):
         nodes_list = [] if nodes_list is None else nodes_list
         if node.left is not None:
             self.traverse_inorder(node.left, nodes_list)
@@ -107,3 +105,16 @@ class BST:
         if node.right is not None:
             self.traverse_inorder(node.right, nodes_list)
         return nodes_list
+
+    def print_tree(self, root: Node, space=0):
+
+        space += 5
+        if root.right is not None:
+            self.print_tree(root.right, space)
+
+        print()
+        print(' ' * space, end='')
+        print(root.key)
+
+        if root.left is not None:
+            self.print_tree(root.left, space)

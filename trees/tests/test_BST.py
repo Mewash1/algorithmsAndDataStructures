@@ -1,11 +1,11 @@
-from ..BST import BST
+from trees.BST import BST
 
 
 def test_one():
     data = [5, 4, 2, 6, 8, 8]
     tree = BST(data)
-    tree.insert_nood_BT(tree.root, 7)
-    tree.insert_nood_BT(tree.root, 7)
+    tree.insert_node_BT(tree.root, 7)
+    tree.insert_node_BT(tree.root, 7)
     pass
 
 

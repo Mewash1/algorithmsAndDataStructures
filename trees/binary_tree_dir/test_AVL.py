@@ -5,8 +5,9 @@ from binary_tree_dir.binary_tree import Node
 
 
 def test_one():
-    data = [1,2]
+    data = [1,2,3,4]
     tree = AVL(data)
-    tree.calculate_balance(tree.root)
-    assert tree.root.balance == -1
-    assert tree.root.right.balance == 0
+    tree.rebalance()
+    pass
+    #assert tree.root.balance == -1
+    #assert tree.root.right.balance == 0

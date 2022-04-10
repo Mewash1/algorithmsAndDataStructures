@@ -89,4 +89,21 @@ class BST:
             while exchanged_node.left is not None:
                 exchanged_node = exchanged_node.left
 
-            self.recursively_remove_nodes(exchanged_node, 'right')       
+            self.recursively_remove_nodes(exchanged_node, 'right')
+
+    def calc_tree_height(self, node):
+        if node is None or (node.left is None and node.right is None):
+            return 0
+        left_height = self.calc_tree_height(node.left)
+        right_height = self.calc_tree_height(node.right)
+        return max(left_height, right_height) + 1
+    
+    def traverse_inorder(self, node, nodes_list):
+        nodes_list = [] if nodes_list is None else nodes_list
+        if node.left is not None:
+            self.traverse_inorder(node.left, nodes_list)
+        new_list = [node]
+        nodes_list += new_list
+        if node.right is not None:
+            self.traverse_inorder(node.right, nodes_list)
+        return nodes_list

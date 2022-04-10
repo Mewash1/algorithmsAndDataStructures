@@ -14,7 +14,7 @@ class BST:
             used_data.pop()
             node.left, used_data = self.create_BT(node.left, data, used_data)
         elif (node.key < data or (node.key == data and data in used_data) or
-              (node.key == data and node.left is not None)):
+              (node.key == data and (node.left is not None or node.right is not None))):
             used_data.pop()
             node.right, used_data = self.create_BT(node.right, data, used_data)
 
@@ -106,15 +106,25 @@ class BST:
             self.traverse_inorder(node.right, nodes_list)
         return nodes_list
 
-    def print_tree(self, root: Node, space=0):
+    def _print_tree_recursive(self, root: Node, space=0, position=0):
 
         space += 5
         if root.right is not None:
-            self.print_tree(root.right, space)
+            self._print_tree_recursive(root.right, space)
+            print()
 
-        print()
         print(' ' * space, end='')
         print(root.key)
 
         if root.left is not None:
-            self.print_tree(root.left, space)
+            self._print_tree_recursive(root.left, space)
+
+    def print_tree(self):
+        root = self.root
+        self._print_tree_recursive(root)
+
+data = [3, 4, 534, 2, 4, 5, 90, 7]
+
+bst = BST(data)
+
+bst.print_tree()

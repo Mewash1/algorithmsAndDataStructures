@@ -45,7 +45,7 @@ class BST:
             node = self.search_BT(node.right, key)
         return node
 
-    def insert_nood_BT(self, node: Node, data, used_data=None):
+    def insert_node_BT(self, node: Node, data, used_data=None):
         used_data = [] if used_data is None else used_data
         if node is None:
             node = Node(data)
@@ -53,11 +53,11 @@ class BST:
         if node.key > data:
             if len(used_data) != 0:
                 used_data.pop()
-            node.left, used_data = self.insert_nood_BT(node.left, data, used_data)
+            node.left, used_data = self.insert_node_BT(node.left, data, used_data)
         elif node.key < data or (node.key == data and data in used_data):
             if len(used_data) != 0:
                 used_data.pop()
-            node.right, used_data = self.insert_nood_BT(node.right, data, used_data)
+            node.right, used_data = self.insert_node_BT(node.right, data, used_data)
 
         used_data.append(data)
 
@@ -110,7 +110,16 @@ class BST:
         if node.right is not None:
             self.traverse_inorder(node.right, nodes_list)
         return nodes_list
-
+    
+    def traverse_postorder(self, node, nodes_list):
+        nodes_list = [] if nodes_list is None else nodes_list
+        if node is not None:
+            self.traverse_postorder(node.left, nodes_list)
+            self.traverse_postorder(node.right, nodes_list)
+            new_list = [node]
+            nodes_list += new_list
+        return nodes_list
+    
     def traverse_preorder(self, root, nodes_list=None):
         nodes_list = [] if nodes_list is None else nodes_list
         nodes_list.append(root)

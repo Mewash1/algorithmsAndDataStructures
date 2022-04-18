@@ -1,6 +1,6 @@
 class Node:
-    def __init__(self, data = None) -> None:
+    def __init__(self, data = None, right = None, left = None) -> None:
         self.key = data
-        self.right = None
-        self.left = None
+        self.right = right
+        self.left = left
         self.balance = 0

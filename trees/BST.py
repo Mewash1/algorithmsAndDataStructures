@@ -116,3 +116,77 @@ class BST:
             new_list = [node]
             nodes_list += new_list
         return nodes_list
+    
+    def traverse_preorder(self, root, nodes_list=None):
+        nodes_list = [] if nodes_list is None else nodes_list
+        nodes_list.append(root)
+        if root.left is not None:
+            self.traverse_preorder(root.left, nodes_list)
+
+        if root.right is not None:
+            self.traverse_preorder(root.right, nodes_list)
+        return nodes_list
+
+    def traverse_preorder_inverse_print(self, root, padding=None, nodes_list=None):
+        nodes_list = [] if nodes_list is None else nodes_list
+        padding = [] if padding is None else padding
+        nodes_list.append(str(root.key))
+        nodes_list.append('\n')
+
+        if root.right is not None and root.left is None:
+            nodes_list += padding
+            nodes_list.append('R->')
+            padding.append('   ')
+            nodes_list, padding = self.traverse_preorder_inverse_print(root.right, padding, nodes_list)
+
+        if root.right is not None and root.left is not None:
+
+            nodes_list += padding
+            nodes_list.append('R->')
+            padding.append('|  ')
+            nodes_list, padding = self.traverse_preorder_inverse_print(root.right, padding, nodes_list)
+
+        if root.left is not None and root.right is not None:
+            padding = self.back_to_left(padding)
+            nodes_list += padding
+            node = root.left
+            if node.right is None and node.left is None:
+                pass
+            else:
+                padding.append('   ')
+            nodes_list.append('L->')
+            nodes_list, padding = self.traverse_preorder_inverse_print(root.left, padding, nodes_list)
+
+        if root.left is not None and root.right is None:
+            # padding = self.back_to_left(padding)
+
+            nodes_list += padding
+            padding.append('    ')
+            nodes_list.append('L->')
+            nodes_list, padding = self.traverse_preorder_inverse_print(root.left, padding, nodes_list)
+
+        return nodes_list, padding
+
+    def back_to_left(self, padding: list):
+        padding_new = copy.deepcopy(padding)
+        padding.reverse()
+        for element in padding:
+            if '|' in element:
+                padding_new.pop()
+                break
+            else:
+                padding_new.pop()
+        return padding_new
+
+    def print_tree(self):
+        root = self.root
+        tree_list, padding = self.traverse_preorder_inverse_print(root)
+        print(*tree_list)
+
+
+data = [3, 2, 0.5, 0.333, 1, 5, 4, 55, 3, 6, 7, 8, 16, 11, 17, 28, 14, 15, 13, 11]
+bst = BST(data)
+
+root = bst.root
+
+bst.print_tree()

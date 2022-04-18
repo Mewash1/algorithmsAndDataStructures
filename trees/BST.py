@@ -107,3 +107,12 @@ class BST:
         if node.right is not None:
             self.traverse_inorder(node.right, nodes_list)
         return nodes_list
+    
+    def traverse_postorder(self, node, nodes_list):
+        nodes_list = [] if nodes_list is None else nodes_list
+        if node is not None:
+            self.traverse_postorder(node.left, nodes_list)
+            self.traverse_postorder(node.right, nodes_list)
+            new_list = [node]
+            nodes_list += new_list
+        return nodes_list

@@ -1,6 +1,6 @@
-from numpy import pad
 from Node import Node
 import copy
+
 
 class BST:
     def __init__(self, data) -> None:
@@ -12,14 +12,15 @@ class BST:
             node = Node(data)
 
         if node.key > data:
-
-            used_data.pop()
+            if len(used_data) != 0:
+                used_data.pop()
             node.left, used_data = self.create_BT(node.left, data, used_data)
 
         elif (node.key < data or (node.key == data and data in used_data) or
               (node.key == data and (node.left is not None or node.right is not None))):
 
-            used_data.pop()
+            if len(used_data) != 0:
+                used_data.pop()
             node.right, used_data = self.create_BT(node.right, data, used_data)
 
         used_data.append(data)
@@ -31,7 +32,7 @@ class BST:
         used_data = None
         for value in data:
             root, used_data = self.create_BT(root, value, used_data)
-
+            used_data = []
         return root
 
     def search_BT(self, node: Node, key) -> Node:
@@ -120,7 +121,6 @@ class BST:
             self.traverse_preorder(root.right, nodes_list)
         return nodes_list
 
-
     def traverse_preorder_inverse_print(self, root, padding=None, nodes_list=None):
         nodes_list = [] if nodes_list is None else nodes_list
         padding = [] if padding is None else padding
@@ -130,13 +130,13 @@ class BST:
         if root.right is not None and root.left is None:
             nodes_list += padding
             nodes_list.append('R->')
-            padding.append('  ')
+            padding.append('   ')
             nodes_list, padding = self.traverse_preorder_inverse_print(root.right, padding, nodes_list)
 
         if root.right is not None and root.left is not None:
 
             nodes_list += padding
-            nodes_list.append('|->')
+            nodes_list.append('R->')
             padding.append('|  ')
             nodes_list, padding = self.traverse_preorder_inverse_print(root.right, padding, nodes_list)
 
@@ -148,65 +148,37 @@ class BST:
                 pass
             else:
                 padding.append('   ')
-            nodes_list.append('*->')
+            nodes_list.append('L->')
             nodes_list, padding = self.traverse_preorder_inverse_print(root.left, padding, nodes_list)
 
         if root.left is not None and root.right is None:
             # padding = self.back_to_left(padding)
 
             nodes_list += padding
+            padding.append('    ')
             nodes_list.append('L->')
             nodes_list, padding = self.traverse_preorder_inverse_print(root.left, padding, nodes_list)
 
         return nodes_list, padding
-
-
-    def left_node_padding_action(self, node: Node, padding=None):
-        padding = [] if padding is None else padding
-        if node.right is None and node.left is None:
-            padding = []
-        elif node.right is not None and node.left is None:
-            padding.append('|  ')
-        elif node.right is None and node.left is not None:
-            padding.append('|  ')
 
     def back_to_left(self, padding: list):
         padding_new = copy.deepcopy(padding)
         padding.reverse()
         for element in padding:
             if '|' in element:
-                padding_new.remove(element)
+                padding_new.pop()
                 break
             else:
-                padding_new.remove(element)
+                padding_new.pop()
         return padding_new
-
 
     def print_tree(self):
         root = self.root
         tree_list, padding = self.traverse_preorder_inverse_print(root)
         print(*tree_list)
 
-    # def _print_tree_recursive(self, root: Node, space=0, position=0):
 
-    #     space += 5
-    #     if root.right is not None:
-    #         self._print_tree_recursive(root.right, space)
-    #         print()
-
-    #     print(' ' * space, end='')
-    #     print(root.key)
-
-    #     if root.left is not None:
-    #         self._print_tree_recursive(root.left, space)
-
-    # def print_tree(self):
-    #     root = self.root
-    #     self._print_tree_recursive(root)
-
-
-
-data = [3, 2, 1, 5, 4, 7, 8, 15, 10, 16]
+data = [3, 2, 0.5, 0.333, 1, 5, 4, 55, 3, 6, 7, 8, 16, 11, 17, 28, 14, 15, 13, 11]
 bst = BST(data)
 
 root = bst.root

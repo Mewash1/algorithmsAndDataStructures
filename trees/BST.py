@@ -1,4 +1,4 @@
-from Node import Node
+from .Node import Node
 import copy
 
 
@@ -6,12 +6,12 @@ class BST:
     def __init__(self, data) -> None:
         self.root = self.create_BT_loop(data)
 
-    def create_BT(self, node: Node, data, used_data=None):
+    '''def create_BT(self, node: Node, data, used_data=None):
         used_data = [] if used_data is None else used_data
         if node is None:
             node = Node(data)
 
-        if node.key > data:
+        elif node.key > data:
             if len(used_data) != 0:
                 used_data.pop()
             node.left, used_data = self.create_BT(node.left, data, used_data)
@@ -25,14 +25,21 @@ class BST:
 
         used_data.append(data)
 
-        return node, used_data
+        return node, used_data'''
+
+    def create_BT(self, node, data):
+        if node is None:
+            node = Node(data)
+        elif node.key > data:
+            node.left = self.create_BT(node.left, data)
+        elif node.key < data or node.key == data:
+            node.right = self.create_BT(node.right, data)
+        return node
 
     def create_BT_loop(self, data):
         root = None
-        used_data = None
         for value in data:
-            root, used_data = self.create_BT(root, value, used_data)
-            used_data = []
+            root = self.create_BT(root, value)
         return root
 
     def search_BT(self, node: Node, key) -> Node:
@@ -103,11 +110,10 @@ class BST:
 
     def traverse_inorder(self, node, nodes_list=None):
         nodes_list = [] if nodes_list is None else nodes_list
-        if node.left is not None:
+        if node is not None:
             self.traverse_inorder(node.left, nodes_list)
-        new_list = [node]
-        nodes_list += new_list
-        if node.right is not None:
+            new_list = [node]
+            nodes_list += new_list
             self.traverse_inorder(node.right, nodes_list)
         return nodes_list
     
@@ -122,11 +128,9 @@ class BST:
     
     def traverse_preorder(self, root, nodes_list=None):
         nodes_list = [] if nodes_list is None else nodes_list
-        nodes_list.append(root)
-        if root.left is not None:
+        if root is not None:
+            nodes_list.append(root)
             self.traverse_preorder(root.left, nodes_list)
-
-        if root.right is not None:
             self.traverse_preorder(root.right, nodes_list)
         return nodes_list
 
@@ -185,11 +189,3 @@ class BST:
         root = self.root
         tree_list, padding = self.traverse_preorder_inverse_print(root)
         print(*tree_list)
-
-
-data = [3, 2, 0.5, 0.333, 1, 5, 4, 55, 3, 6, 7, 8, 16, 11, 17, 28, 14, 15, 13, 11]
-bst = BST(data)
-
-root = bst.root
-
-bst.print_tree()

@@ -14,9 +14,8 @@ class AVL(BST):
         After each insertion the tree is rebalanced.
         '''
         self.root = None
-        used_data = None
         for value in data:
-            self.root, used_data = self.create_BT(self.root, value, used_data)
+            self.root = self.create_BT(self.root, value)
             self.rebalance()
         return self.root
 

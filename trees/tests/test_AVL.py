@@ -13,7 +13,7 @@ def test_one():
 
 
 def test_two():
-    data = [1,5,9,11,56,56]
+    data = [1,5,56,56,43,8,47,33,22,88,1,2,7,9,4,6,3,5,9,2,5,66]
     tree = AVL(data)
     nodes_list = tree.traverse_inorder(tree.root, None)
     assert len(nodes_list) == len(data)
@@ -31,3 +31,13 @@ def test_three():
     nodes_list = tree.traverse_inorder(tree.root, None)
     tree.rebalance()
     pass
+
+def test_repeated_data():
+    data = [2,2,2,3,4,3,4,3,4,1,1,1]
+    tree = AVL(data)
+    inorder_list = tree.traverse_preorder(tree.root, None)
+    new_list = []
+    for node in inorder_list:
+        new_list.append(node.key)
+    tree.print_tree()
+    assert len(new_list) == len(data)

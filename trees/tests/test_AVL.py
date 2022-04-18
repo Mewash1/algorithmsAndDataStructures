@@ -1,15 +1,15 @@
-from trees.BST import BST
 from trees.AVL import AVL  
 from trees.Node import Node
 
 def test_one():
     data = [2,5,4,6,7]
-    tree = BST(data)
+    tree = AVL(data)
     nodes_list = tree.traverse_postorder(tree.root, None)
     key_list = []
+    tree.print_tree()
     for node in nodes_list:
         key_list.append(node.key)
-    assert key_list == [4,7,6,5,2]
+    assert key_list == [2,5,7,6,4]
 
 
 def test_two():

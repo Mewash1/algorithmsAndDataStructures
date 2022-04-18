@@ -27,19 +27,10 @@ class BST:
 
         return node, used_data'''
 
-    def create_BT(self, node, data):
-        if node is None:
-            node = Node(data)
-        elif node.key > data:
-            node.left = self.create_BT(node.left, data)
-        elif node.key < data or node.key == data:
-            node.right = self.create_BT(node.right, data)
-        return node
-
     def create_BT_loop(self, data):
         root = None
         for value in data:
-            root = self.create_BT(root, value)
+            root = self.insert_node_BT(root, value)
         return root
 
     def search_BT(self, node: Node, key) -> Node:
@@ -51,24 +42,15 @@ class BST:
         else:
             node = self.search_BT(node.right, key)
         return node
-
-    def insert_node_BT(self, node: Node, data, used_data=None):
-        used_data = [] if used_data is None else used_data
+    
+    def insert_node_BT(self, node, data):
         if node is None:
             node = Node(data)
-
-        if node.key > data:
-            if len(used_data) != 0:
-                used_data.pop()
-            node.left, used_data = self.insert_node_BT(node.left, data, used_data)
-        elif node.key < data or (node.key == data and data in used_data):
-            if len(used_data) != 0:
-                used_data.pop()
-            node.right, used_data = self.insert_node_BT(node.right, data, used_data)
-
-        used_data.append(data)
-
-        return node, used_data
+        elif node.key > data:
+            node.left = self.insert_node_BT(node.left, data)
+        elif node.key < data or node.key == data:
+            node.right = self.insert_node_BT(node.right, data)
+        return node
 
     def recursively_remove_nodes(self, node: Node, side):
         if side == 'left' and node.left is not None:

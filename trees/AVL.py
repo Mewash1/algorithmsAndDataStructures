@@ -1,4 +1,3 @@
-from logging import root
 from .BST import BST 
 from .Node import Node
 
@@ -15,7 +14,7 @@ class AVL(BST):
         '''
         self.root = None
         for value in data:
-            self.root = self.create_BT(self.root, value)
+            self.root = self.insert_node_BT(self.root, value)
             self.rebalance()
         return self.root
 
@@ -33,7 +32,7 @@ class AVL(BST):
     def rebalance(self):
         '''
         Rebalances the whole tree.
-        This method should be used after every modification to the tree - insertion or deletion.
+        This method should be called after every modification to the tree - insertion or deletion.
         '''
         good_balance = {-1, 0, 1}
         nodes_list = self.traverse_postorder(self.root, None)
@@ -50,7 +49,6 @@ class AVL(BST):
                         self.rotate_right_left(node, nodes_list)
                     else:
                         self.rotate_right_right(node, nodes_list)
-                nodes_list = self.traverse_postorder(self.root, None)
                 self.calculate_balance(self.root, nodes_list)
 
     def rotate_right_right(self, node, nodes_list):
@@ -70,11 +68,6 @@ class AVL(BST):
                 elif s_node.left == node:
                     s_node.left = new_root
                     break
-        
-
-    def rotate_right_left(self, node, nodes_list):
-        self.rotate_left_left(node.left, nodes_list)
-        self.rotate_right_right(node, nodes_list)
     
     def rotate_left_left(self, node, nodes_list):
         if node.right is not None:
@@ -92,28 +85,14 @@ class AVL(BST):
                 elif s_node.left == node:
                     s_node.left = new_root
                     break
-        
-        '''
-        for s_node in nodes_list:
-            if s_node == node:
-                self.modify_node(new_root, s_node)
-                break
-            elif s_node.right == node:
-                self.modify_node(new_root, s_node.right)
-                break
-            elif s_node.left == node:
-                self.modify_node(new_root, s_node.left)
-                break
-        '''
 
     def rotate_left_right(self, node, nodes_list):
         self.rotate_right_right(node.right, nodes_list)
         self.rotate_left_left(node, nodes_list)
 
-    def modify_node(self, new_node, old_node):
-        old_node.key = new_node.key
-        old_node.left = new_node.left
-        old_node.right = new_node.right
+    def rotate_right_left(self, node, nodes_list):
+        self.rotate_left_left(node.left, nodes_list)
+        self.rotate_right_right(node, nodes_list)
 
     def remove_node_AVL(self, node: Node, key):
         self.remove_node_BT(self, node, key)

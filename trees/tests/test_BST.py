@@ -18,7 +18,7 @@ def test_search_BT():
 
 
 def test_calc_tree_height():
-    data = [1,2,3,4]
+    data = [1, 2, 3, 4]
     tree = BST(data)
     assert tree.calc_tree_height(tree.root) == 3
 
@@ -30,7 +30,7 @@ def test_traverse_inorder():
     new_list = []
     for node in inorder_list:
         new_list.append(node.key)
-    assert new_list == [2,4,5,6,8,8]
+    assert new_list == [2, 4, 5, 6, 8, 8]
 
 
 def test_print():
@@ -39,4 +39,16 @@ def test_print():
 
     root = bst.root
 
-    bst.print_tree(root)
+    bst.print_tree()
+
+
+def test_traverse_preorder():
+    data = [5, 4, 2, 6, 7, 8, 8]
+    tree = BST(data)
+    inorder_list = tree.traverse_preorder(tree.root, None)
+    new_list = []
+    for node in inorder_list:
+        new_list.append(node.key)
+    assert new_list == [5, 4, 2, 6, 7, 8, 8]
+
+

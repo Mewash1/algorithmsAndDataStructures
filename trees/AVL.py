@@ -1,5 +1,5 @@
-from .BST import BST 
-from .Node import Node
+from BST import BST 
+from Node import Node
 
 
 class AVL(BST):

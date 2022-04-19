@@ -1,31 +1,10 @@
-from .Node import Node
+from Node import Node
 import copy
 
 
 class BST:
     def __init__(self, data) -> None:
         self.root = self.create_BT_loop(data)
-
-    '''def create_BT(self, node: Node, data, used_data=None):
-        used_data = [] if used_data is None else used_data
-        if node is None:
-            node = Node(data)
-
-        elif node.key > data:
-            if len(used_data) != 0:
-                used_data.pop()
-            node.left, used_data = self.create_BT(node.left, data, used_data)
-
-        elif (node.key < data or (node.key == data and data in used_data) or
-              (node.key == data and (node.left is not None or node.right is not None))):
-
-            if len(used_data) != 0:
-                used_data.pop()
-            node.right, used_data = self.create_BT(node.right, data, used_data)
-
-        used_data.append(data)
-
-        return node, used_data'''
 
     def create_BT_loop(self, data):
         root = None
@@ -36,7 +15,6 @@ class BST:
     def search_BT(self, node: Node, key) -> Node:
         if node is None or node.key == key:
             return node
-
         if key < node.key:
             node = self.search_BT(node.left, key)
         else:

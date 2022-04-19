@@ -1,5 +1,6 @@
 from ..BST import BST
 
+
 def test_insert_nood():
     data = [5, 4, 2, 6, 8, 8]
     tree = BST(data)
@@ -49,16 +50,6 @@ def test_repeated_data():
     tree = BST(data)
     inorder_list = tree.traverse_inorder_keys(tree.root, None)
     assert len(inorder_list) == len(data)
-
-
-def test_remove_node_one_child():
-    data = [5, 4, 2, 6, 8, 8]
-    tree = BST(data)
-    inorder_list1 = tree.traverse_inorder_keys(tree.root)
-    assert inorder_list1 == [2, 4, 5, 6, 8, 8]
-    tree.remove_node_BT(tree.root, 4)
-    inorder_list2 = tree.traverse_inorder_keys(tree.root)
-    assert inorder_list2 == [2, 5, 6, 8, 8]
 
 
 def test_remove_node_one_child():

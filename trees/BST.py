@@ -6,27 +6,6 @@ class BST:
     def __init__(self, data) -> None:
         self.root = self.create_BT_loop(data)
 
-    '''def create_BT(self, node: Node, data, used_data=None):
-        used_data = [] if used_data is None else used_data
-        if node is None:
-            node = Node(data)
-
-        elif node.key > data:
-            if len(used_data) != 0:
-                used_data.pop()
-            node.left, used_data = self.create_BT(node.left, data, used_data)
-
-        elif (node.key < data or (node.key == data and data in used_data) or
-              (node.key == data and (node.left is not None or node.right is not None))):
-
-            if len(used_data) != 0:
-                used_data.pop()
-            node.right, used_data = self.create_BT(node.right, data, used_data)
-
-        used_data.append(data)
-
-        return node, used_data'''
-
     def create_BT_loop(self, data):
         root = None
         for value in data:
@@ -42,46 +21,54 @@ class BST:
         else:
             node = self.search_BT(node.right, key)
         return node
-    
-    def insert_node_BT(self, node, data):
+
+    def insert_node_BT(self, node, data, up=None):
         if node is None:
             node = Node(data)
+            if up is not None:
+                node.up = up
         elif node.key > data:
-            node.left = self.insert_node_BT(node.left, data)
+            node.left = self.insert_node_BT(node.left, data, node)
         elif node.key < data or node.key == data:
-            node.right = self.insert_node_BT(node.right, data)
+            node.right = self.insert_node_BT(node.right, data, node)
         return node
-
-    def recursively_remove_nodes(self, node: Node, side):
-        if side == 'left' and node.left is not None:
-            node.key = node.left.key
-            self.recursively_remove_nodes(node.left, side)
-        elif side == 'right' and node.right is not None:
-            node.key = node.right.key
-            self.recursively_remove_nodes(node.right, side)
-        else:
-            node.key = None
 
     def remove_node_BT(self, node: Node, key):
 
-        nood_rm = self.search_BT(node, key)
+        node_rm = self.search_BT(node, key)
 
-        if nood_rm.left is None and nood_rm.right is None:
-            nood_rm.key = None
-            pass
+        if node_rm.left is None and node_rm.right is None:
+            node_rm = None
 
-        elif nood_rm.left is not None and nood_rm.right is None:
-            self.recursively_remove_nodes(nood_rm, 'left')
+        elif node_rm.left is not None and node_rm.right is None:
+            up = node_rm.up
+            grandchild = node_rm.left
+            self.link_grandchild_with_grandfather(up, node_rm, grandchild)
 
-        elif nood_rm.left is None and nood_rm.right is not None:
-            self.recursively_remove_nodes(nood_rm, 'right')
+        elif node_rm.left is None and node_rm.right is not None:
+            up = node_rm.up
+            self.link_grandchild_with_grandfather(up, node_rm, node_rm.right)
 
         else:
-            exchanged_node = nood_rm.right
-            while exchanged_node.left is not None:
-                exchanged_node = exchanged_node.left
+            self.remove_nodes_two_children(node_rm, node)
 
-            self.recursively_remove_nodes(exchanged_node, 'right')
+    def remove_nodes_two_children(self, node, root):
+        next_node = node.right
+        while next_node.left is not None:
+            next_node = next_node.left
+
+        node.key = next_node.key
+
+        self.remove_node_BT(node.right, next_node.key)
+
+    def link_grandchild_with_grandfather(self, grandfather: Node, child: Node,
+                                         grandchild: Node):
+        if grandfather.left == child:
+            grandfather.left = grandchild
+            grandchild.up = grandfather
+        else:
+            grandfather.right = grandchild
+            grandchild.up = grandfather
 
     def calc_tree_height(self, node):
         if node is None or (node.left is None and node.right is None):
@@ -98,7 +85,17 @@ class BST:
             nodes_list += new_list
             self.traverse_inorder(node.right, nodes_list)
         return nodes_list
-    
+
+    def traverse_inorder_keys(self, node, nodes_list=None):
+        nodes_list = [] if nodes_list is None else nodes_list
+        if node is not None:
+            self.traverse_inorder_keys(node.left, nodes_list)
+            if node.key is not None:
+                new_list = [node.key]
+                nodes_list += new_list
+            self.traverse_inorder_keys(node.right, nodes_list)
+        return nodes_list
+
     def traverse_postorder(self, node, nodes_list):
         nodes_list = [] if nodes_list is None else nodes_list
         if node is not None:
@@ -107,7 +104,7 @@ class BST:
             new_list = [node]
             nodes_list += new_list
         return nodes_list
-    
+
     def traverse_preorder(self, root, nodes_list=None):
         nodes_list = [] if nodes_list is None else nodes_list
         if root is not None:
@@ -116,7 +113,7 @@ class BST:
             self.traverse_preorder(root.right, nodes_list)
         return nodes_list
 
-    def traverse_preorder_inverse_print(self, root, padding=None, nodes_list=None):
+    def make_print_list(self, root, padding=None, nodes_list=None):
         nodes_list = [] if nodes_list is None else nodes_list
         padding = [] if padding is None else padding
         nodes_list.append(str(root.key))
@@ -126,14 +123,15 @@ class BST:
             nodes_list += padding
             nodes_list.append('R->')
             padding.append('   ')
-            nodes_list, padding = self.traverse_preorder_inverse_print(root.right, padding, nodes_list)
+            nodes_list, padding = self.make_print_list
+            (root.right, padding, nodes_list)
 
         if root.right is not None and root.left is not None:
 
             nodes_list += padding
             nodes_list.append('R->')
             padding.append('|  ')
-            nodes_list, padding = self.traverse_preorder_inverse_print(root.right, padding, nodes_list)
+            nodes_list, padding = self.make_print_list(root.right, padding, nodes_list)
 
         if root.left is not None and root.right is not None:
             padding = self.back_to_left(padding)
@@ -144,7 +142,7 @@ class BST:
             else:
                 padding.append('   ')
             nodes_list.append('L->')
-            nodes_list, padding = self.traverse_preorder_inverse_print(root.left, padding, nodes_list)
+            nodes_list, padding = self.make_print_list(root.left, padding, nodes_list)
 
         if root.left is not None and root.right is None:
             # padding = self.back_to_left(padding)
@@ -152,7 +150,7 @@ class BST:
             nodes_list += padding
             padding.append('    ')
             nodes_list.append('L->')
-            nodes_list, padding = self.traverse_preorder_inverse_print(root.left, padding, nodes_list)
+            nodes_list, padding = self.make_print_list(root.left, padding, nodes_list)
 
         return nodes_list, padding
 
@@ -169,5 +167,5 @@ class BST:
 
     def print_tree(self):
         root = self.root
-        tree_list, padding = self.traverse_preorder_inverse_print(root)
+        tree_list, padding = self.make_print_list(root)
         print(*tree_list)

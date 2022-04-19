@@ -1,3 +1,4 @@
+from turtle import right
 from Node import Node
 import copy
 
@@ -72,36 +73,46 @@ class BST:
             node.right = self.insert_node_BT(node.right, data, node)
         return node
 
-    def recursively_remove_nodes(self, node: Node, side):
-        if side == 'left' and node.left is not None:
-            node.key = node.left.key
-            self.recursively_remove_nodes(node.left, side)
-        elif side == 'right' and node.right is not None:
-            node.key = node.right.key
-            self.recursively_remove_nodes(node.right, side)
-        else:
-            node.key = None
-
+   
     def remove_node_BT(self, node: Node, key):
 
-        nood_rm = self.search_BT(node, key)
+        node_rm = self.search_BT(node, key)
 
-        if nood_rm.left is None and nood_rm.right is None:
-            nood_rm.key = None
-            pass
+        if node_rm.left is None and node_rm.right is None:
+            node_rm = None
 
-        elif nood_rm.left is not None and nood_rm.right is None:
-            self.recursively_remove_nodes(nood_rm, 'left')
+        elif node_rm.left is not None and node_rm.right is None:
+            up = node_rm.up
+            grandchild = node_rm.left
+            self.link_grandchild_with_grandfather(up, node_rm, grandchild)
 
-        elif nood_rm.left is None and nood_rm.right is not None:
-            self.recursively_remove_nodes(nood_rm, 'right')
+
+        elif node_rm.left is None and node_rm.right is not None:
+            up = node_rm.up
+            self.link_grandchild_with_grandfather(up, node_rm, node_rm.right)
 
         else:
-            exchanged_node = nood_rm.right
-            while exchanged_node.left is not None:
-                exchanged_node = exchanged_node.left
+            self.remove_nodes_two_children(node_rm, node)
 
-            self.recursively_remove_nodes(exchanged_node, 'right')
+
+    def remove_nodes_two_children(self, node, root):
+        next_node = node.right
+        while next_node.left is not None:
+            next_node = next_node.left
+
+        node.key = next_node.key
+
+        self.remove_node_BT(node.right, next_node.key)
+
+
+    def link_grandchild_with_grandfather(self, grandfather: Node, child: Node, grandchild: Node):
+        if grandfather.left == child:
+            grandfather.left = grandchild
+            grandchild.up = grandfather
+        else:
+            grandfather.right = grandchild
+            grandchild.up = grandfather
+
 
     def calc_tree_height(self, node):
         if node is None or (node.left is None and node.right is None):
@@ -201,3 +212,10 @@ class BST:
         root = self.root
         tree_list, padding = self.traverse_preorder_inverse_print(root)
         print(*tree_list)
+
+
+data = [5, 4, 2, 9, 8, 11, 7, 10, 11]
+tree = BST(data)
+tree.print_tree()
+tree.remove_node_BT(tree.root, 9)
+list_inorder = tree.traverse_inorder_keys(tree.root)

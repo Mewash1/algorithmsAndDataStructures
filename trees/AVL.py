@@ -1,12 +1,12 @@
-from .BST import BST 
-from .Node import Node
+from BST import BST
+from Node import Node
 
 
 class AVL(BST):
     def __init__(self, data) -> None:
         self.root = self.create_AVL_loop(data)
         # self.root = self.create_BT_loop(data)
-    
+
     def create_AVL_loop(self, data):
         '''
         Creates an AVL tree using an existing create_BT method. \n
@@ -68,7 +68,7 @@ class AVL(BST):
                 elif s_node.left == node:
                     s_node.left = new_root
                     break
-    
+
     def rotate_left_left(self, node, nodes_list):
         if node.right is not None:
             new_root = Node(node.right.key, node.right.right, node.right.left)
@@ -97,7 +97,7 @@ class AVL(BST):
     def remove_node_AVL(self, node: Node, key):
         self.remove_node_BT(self, node, key)
         self.rebalance()
-    
+
     def insert_node_AVL(self, node: Node, key):
         self.insert_node_BT(node, key)
         self.rebalance()

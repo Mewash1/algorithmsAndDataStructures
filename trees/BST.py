@@ -1,4 +1,4 @@
-from .Node import Node
+from Node import Node
 import copy
 
 
@@ -61,13 +61,15 @@ class BST:
             node = self.search_BT(node.right, key)
         return node
 
-    def insert_node_BT(self, node, data):
+    def insert_node_BT(self, node, data, up=None):
         if node is None:
             node = Node(data)
+            if up is not None:
+                node.up = up
         elif node.key > data:
-            node.left = self.insert_node_BT(node.left, data)
+            node.left = self.insert_node_BT(node.left, data, node)
         elif node.key < data or node.key == data:
-            node.right = self.insert_node_BT(node.right, data)
+            node.right = self.insert_node_BT(node.right, data, node)
         return node
 
     def recursively_remove_nodes(self, node: Node, side):
@@ -115,6 +117,16 @@ class BST:
             new_list = [node]
             nodes_list += new_list
             self.traverse_inorder(node.right, nodes_list)
+        return nodes_list
+
+    def traverse_inorder_keys(self, node, nodes_list=None):
+        nodes_list = [] if nodes_list is None else nodes_list
+        if node is not None:
+            self.traverse_inorder_keys(node.left, nodes_list)
+            if node.key is not None:
+                new_list = [node.key]
+                nodes_list += new_list
+            self.traverse_inorder_keys(node.right, nodes_list)
         return nodes_list
 
     def traverse_postorder(self, node, nodes_list):
@@ -189,10 +201,3 @@ class BST:
         root = self.root
         tree_list, padding = self.traverse_preorder_inverse_print(root)
         print(*tree_list)
-
-
-data = [3, 2, 2, 1, 5, 6, 77, 5, 7, 90, 8, 6, 7, 9]
-
-bst = BST(data)
-
-bst.print_tree()

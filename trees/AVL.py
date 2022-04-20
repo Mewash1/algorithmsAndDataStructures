@@ -1,4 +1,3 @@
-from xxlimited import new
 from .BST import BST 
 from .Node import Node
 
@@ -18,35 +17,56 @@ class AVL(BST):
         for value in data:
             self.root = self.insert_node_AVL(self.root, value)
             self.root.height = self.calc_node_height(self.root)
-            self.root.balance = self.calculate_balance(self.root)
+            new_root = self.rebalance(self.root)
         return self.root
 
 
-    def insert_node_AVL(self, node, data):
+    def insert_node_AVL(self, node, data, up=None):
         if node is None:
             node = Node(data)
+            if up is not None:
+                node.up = up
         elif node.key > data:
-            node.left = self.insert_node_AVL(node.left, data)
+            node.left = self.insert_node_AVL(node.left, data, node)
             node.left.height = self.calc_node_height(node.left)
-            new_root = self.rebalance(node)
-            if new_root:
-                self.change_node(node, new_root)
         elif node.key < data or node.key == data:
-            node.right = self.insert_node_AVL(node.right, data)
+            node.right = self.insert_node_AVL(node.right, data, node)
             node.right.height = self.calc_node_height(node.right)
-            new_root = self.rebalance(node)
-            if new_root:
-                self.change_node(node, new_root)
+        new_root = self.rebalance(node)
+        if new_root:
+            new_root.up = node.up if node.up else None
+            self.change_node_after_balancing(node, new_root)
         return node
     
 
     def change_node(self, old, new):
-        if old:
+        if old and new:
             old.key = new.key
-            old.left = Node(new.left.key, new.left.right, new.left.left) if new.left else None
-            old.right = Node(new.right.key, new.right.right, new.right.left) if new.right else None
+            if new.up is not None:
+                if new.up.up is not None:
+                    old.up = Node(new.up.key, new.up.right, new.up.left, new.up.up)
+                else:
+                    old.up = Node(new.up.key, new.up.right, new.up.left)
+            else:
+                old.up = None
+            old.left = Node(new.left.key, new.left.right, new.left.left, new.left.up) if new.left else None
+            old.right = Node(new.right.key, new.right.right, new.right.left, new.right.up) if new.right else None
             old.height = new.height
             old.balance = new.balance
+            return old
+    
+    def change_node_after_balancing(self, old, new):
+        if old and new:
+            old.key = new.key
+            old.left = Node(new.left.key, new.left.right, new.left.left, new.left.up) if new.left else None
+            old.right = Node(new.right.key, new.right.right, new.right.left, new.right.up) if new.right else None
+            old.height = new.height
+            old.balance = new.balance
+            if old.left:
+                old.left.up = old
+            if old.right:
+                old.right.up = old
+            return old
 
     def calculate_balance(self, node):
         '''
@@ -76,30 +96,38 @@ class AVL(BST):
                     new_root = self.rotate_right_left(node)
                 else:
                     new_root = self.rotate_right_right(node)
-            self.calculate_balance(self.root)
             return new_root
 
     def rotate_right_right(self, node):
         if node.left is not None:
-            new_root = Node(node.left.key, node.left.left, node.left.right)
-            middle = new_root.right
-            middle = Node(new_root.right.key, new_root.right.right, new_root.right.left) if new_root.right is not None else None
-            new_root.right = Node(node.key, node.right, node.left)
+            new_root = self.change_node(Node(), node.left)
+            middle = self.change_node(Node(), new_root.right)
+            new_root.right = self.change_node(Node(), node)
             new_root.right.left = middle
         
             node.height = self.calc_node_height(node)
             new_root.height = self.calc_node_height(new_root)
+            new_root.up = None
+            if new_root.left:
+                new_root.left.up = new_root
+            if new_root.right:
+                new_root.right.up = new_root 
             return new_root
     
     def rotate_left_left(self, node):
         if node.right is not None:
-            new_root = Node(node.right.key, node.right.right, node.right.left)
-            middle = Node(new_root.left.key, new_root.left.right, new_root.left.left) if new_root.left is not None else None
-            new_root.left = Node(node.key, node.right, node.left)
+            new_root = self.change_node(Node(), node.right)
+            middle = self.change_node(Node(), new_root.left)
+            new_root.left = self.change_node(Node(), node)
             new_root.left.right = middle
 
             node.height = self.calc_node_height(node)
-            new_root.height = self.calc_node_height(new_root)
+            new_root.height = self.calc_node_height(new_root)  
+            new_root.up = None
+            if new_root.left:
+                new_root.left.up = new_root
+            if new_root.right:
+                new_root.right.up = new_root
             return new_root
 
     def rotate_left_right(self, node):
@@ -113,6 +141,10 @@ class AVL(BST):
         return self.rotate_right_right(node)
 
     def remove_node_AVL(self, node: Node, key):
-        self.remove_node_BT(self, node, key)
+        grandfather = self.search_BT(self.root, key).up
+        self.remove_node_BT(node, key)
         self.root.height = self.calc_node_height(self.root)
-        self.rebalance()
+        grandfather.height = self.calc_node_height(grandfather)
+        new_root = self.rebalance(grandfather)
+        if new_root:
+            self.change_node_after_balancing(node, new_root)

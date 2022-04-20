@@ -7,18 +7,18 @@ class Sortings:
     '''Helps with detaling results'''
 
     def __init__(self) -> None:
-        self._sortings = ['bubble', 'selection', 'merge', 'quick']
+        self._sortings = ["create", "delete", "find"]
 
     def added_sorting(self, name):
         for sorting in self._sortings:
             if sorting in name:
                 self._sortings.remove(sorting)
-                return sorting + '_sort'
+                return sorting + '_tree'
         return None
 
 
 def open_results():
-    with open("results.json", 'r') as handle:
+    with open("/home/miloszun/aisdi/trees/results.json", 'r') as handle:
         reuslts = read_results(handle)
     return reuslts
 
@@ -53,27 +53,19 @@ def creating_dir_for_stats():
 def plot_reuslts(results: dict):
     '''Plots statistics'''
     creating_dir_for_stats()
-    amount = [1000, 2000, 5000, 7000, 10000]
-    ticks = [1000, 2000, 3000, 4000, 5000, 6000,
-             7000, 8000, 9000, 10000]
+    amount = [1000, 2000, 3000, 4000, 5000]
+    ticks = [1000, 2000, 3000, 4000, 5000]
     for name, values in results.items():
-        plt.plot(amount, values, 'o-')
+        plt.plot(amount, values[:5], 'o-', label="BST")
+        plt.plot(amount, values[5:], 'o-', label="AVL")
+        plt.legend()
         plt.xticks(ticks)
         plt.title(name)
         plt.ylabel('miliseconds')
-        plt.xlabel('number of words')
+        plt.xlabel('number of elements')
         plt.savefig(f'statistics/{name}.png', format='png')
-        plt.clf()
-
-    for name, values in results.items():
-        plt.plot(amount, values, 'o-', label=name)
-        plt.xticks(ticks)
-        plt.title('Sortings compared')
-        plt.ylabel('miliseconds')
-        plt.xlabel('number of words')
-        plt.legend()
-        plt.savefig('statistics/sortings_compared.png', format='png')
-
+        #plt.clf()
+        plt.show()
 
 def main():
     reuslts = open_results()

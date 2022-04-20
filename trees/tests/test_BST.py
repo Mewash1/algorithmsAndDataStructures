@@ -1,4 +1,4 @@
-from ..BST import BST
+from trees.BST import BST
 
 
 def test_insert_nood():
@@ -21,7 +21,7 @@ def test_search_BT():
 def test_calc_tree_height():
     data = [1, 2, 3, 4]
     tree = BST(data)
-    assert tree.calc_tree_height(tree.root) == 3
+    assert tree.calc_node_height(tree.root) == 3
 
 
 def test_traverse_inorder():

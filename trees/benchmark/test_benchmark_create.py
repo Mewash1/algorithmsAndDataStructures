@@ -2,8 +2,7 @@ import random
 import pytest
 from trees.AVL import AVL 
 from trees.BST import BST
-from trees.Node import Node
-import cProfile
+
 
 @pytest.fixture
 def random_list():

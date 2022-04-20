@@ -28,19 +28,25 @@ class BST:
             if up is not None:
                 node.up = up
         elif node.key > data:
-            node.left = self.insert_node_BT(node.left, data)
+            node.left = self.insert_node_BT(node.left, data, node)
             node.left.height = self.calc_node_height(node.left)
         elif node.key < data or node.key == data:
-            node.right = self.insert_node_BT(node.right, data)
+            node.right = self.insert_node_BT(node.right, data, node)
             node.right.height = self.calc_node_height(node.right)
         return node
 
     def remove_node_BT(self, node: Node, key):
 
         node_rm = self.search_BT(node, key)
-
+        if node_rm is None:
+            return 0
+        if node_rm == self.root:
+            raise ValueError("You can't delete the root node!")
         if node_rm.left is None and node_rm.right is None:
-            node_rm = None
+            if node_rm.up.right:
+                node_rm.up.right = None
+            else:
+                node_rm.up.left = None
 
         elif node_rm.left is not None and node_rm.right is None:
             up = node_rm.up
@@ -58,13 +64,10 @@ class BST:
         next_node = node.right
         while next_node.left is not None:
             next_node = next_node.left
-
         node.key = next_node.key
-
         self.remove_node_BT(node.right, next_node.key)
 
-    def link_grandchild_with_grandfather(self, grandfather: Node, child: Node,
-                                         grandchild: Node):
+    def link_grandchild_with_grandfather(self, grandfather: Node, child: Node, grandchild: Node):
         if grandfather.left == child:
             grandfather.left = grandchild
             grandchild.up = grandfather
@@ -125,8 +128,7 @@ class BST:
             nodes_list += padding
             nodes_list.append('R->')
             padding.append('   ')
-            nodes_list, padding = self.make_print_list
-            (root.right, padding, nodes_list)
+            nodes_list, padding = self.make_print_list(root.right, padding, nodes_list)
 
         if root.right is not None and root.left is not None:
 
@@ -171,3 +173,4 @@ class BST:
         root = self.root
         tree_list, padding = self.make_print_list(root)
         print(*tree_list)
+

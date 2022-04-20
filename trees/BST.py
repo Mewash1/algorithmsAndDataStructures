@@ -1,4 +1,4 @@
-from Node import Node
+from .Node import Node
 import copy
 
 
@@ -10,6 +10,7 @@ class BST:
         root = None
         for value in data:
             root = self.insert_node_BT(root, value)
+        root.height = self.calc_node_height(root)
         return root
 
     def search_BT(self, node: Node, key) -> Node:
@@ -26,8 +27,10 @@ class BST:
             node = Node(data)
         elif node.key > data:
             node.left = self.insert_node_BT(node.left, data)
+            node.left.height = self.calc_node_height(node.left)
         elif node.key < data or node.key == data:
             node.right = self.insert_node_BT(node.right, data)
+            node.right.height = self.calc_node_height(node.right)
         return node
 
     def recursively_remove_nodes(self, node: Node, side):
@@ -60,13 +63,16 @@ class BST:
                 exchanged_node = exchanged_node.left
 
             self.recursively_remove_nodes(exchanged_node, 'right')
+        self.calc_node_height(node)
+        self.calc_node_height(self.root)
+        
 
-    def calc_tree_height(self, node):
+    def calc_node_height(self, node):
         if node is None or (node.left is None and node.right is None):
             return 0
-        left_height = self.calc_tree_height(node.left)
-        right_height = self.calc_tree_height(node.right)
-        return max(left_height, right_height) + 1
+        left = node.left.height if node.left is not None else 0
+        right = node.right.height if node.right is not None else 0
+        return max(left, right) + 1
 
     def traverse_inorder(self, node, nodes_list=None):
         nodes_list = [] if nodes_list is None else nodes_list

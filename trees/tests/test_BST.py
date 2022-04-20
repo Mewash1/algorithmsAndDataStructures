@@ -62,3 +62,18 @@ def test_repeated_data():
         new_list.append(node.key)
     tree.print_tree()
     assert len(new_list) == len(data)
+
+def test_calc_height_for_nodes():
+    data = [2,4,1,5,6,1,9,10]
+    tree = BST(data)
+    nodes_list = tree.traverse_postorder(tree.root, None)
+    for node in nodes_list:
+        print(node.key, node.height)
+    tree.print_tree()
+    
+    tree.insert_node_BT(tree.root, 100)
+    nodes_list = tree.traverse_postorder(tree.root, None)
+    for node in nodes_list:
+        print(node.key, node.height)
+    tree.print_tree()
+    assert 1 == 0

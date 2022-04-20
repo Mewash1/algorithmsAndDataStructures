@@ -2,6 +2,8 @@ import random
 import pytest
 from trees.AVL import AVL 
 from trees.BST import BST
+from trees.Node import Node
+import cProfile
 
 @pytest.fixture
 def random_list():
@@ -38,3 +40,14 @@ def test_create_AVL_2000(benchmark, random_list):
     avl = AVL([1])
     benchmark(avl.create_AVL_loop, random_list[:2000])
 
+def test_create_AVL_3000(benchmark, random_list):
+    avl = AVL([1])
+    benchmark(avl.create_AVL_loop, random_list[:3000])
+
+def test_create_AVL_4000(benchmark, random_list):
+    avl = AVL([1])
+    benchmark(avl.create_AVL_loop, random_list[:4000])
+
+def test_create_AVL_5000(benchmark, random_list):
+    avl = AVL([1])
+    benchmark(avl.create_AVL_loop, random_list[:5000])

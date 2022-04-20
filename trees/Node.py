@@ -4,3 +4,4 @@ class Node:
         self.right = right
         self.left = left
         self.balance = 0
+        self.height = 0

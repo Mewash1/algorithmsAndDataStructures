@@ -10,12 +10,12 @@ class BST:
         root = None
         for value in data:
             root = self.insert_node_BT(root, value)
+        root.height = self.calc_node_height(root)
         return root
 
     def search_BT(self, node: Node, key) -> Node:
         if node is None or node.key == key:
             return node
-
         if key < node.key:
             node = self.search_BT(node.left, key)
         else:
@@ -28,9 +28,11 @@ class BST:
             if up is not None:
                 node.up = up
         elif node.key > data:
-            node.left = self.insert_node_BT(node.left, data, node)
+            node.left = self.insert_node_BT(node.left, data)
+            node.left.height = self.calc_node_height(node.left)
         elif node.key < data or node.key == data:
-            node.right = self.insert_node_BT(node.right, data, node)
+            node.right = self.insert_node_BT(node.right, data)
+            node.right.height = self.calc_node_height(node.right)
         return node
 
     def remove_node_BT(self, node: Node, key):
@@ -70,12 +72,12 @@ class BST:
             grandfather.right = grandchild
             grandchild.up = grandfather
 
-    def calc_tree_height(self, node):
+    def calc_node_height(self, node):
         if node is None or (node.left is None and node.right is None):
             return 0
-        left_height = self.calc_tree_height(node.left)
-        right_height = self.calc_tree_height(node.right)
-        return max(left_height, right_height) + 1
+        left = node.left.height if node.left is not None else 0
+        right = node.right.height if node.right is not None else 0
+        return max(left, right) + 1
 
     def traverse_inorder(self, node, nodes_list=None):
         nodes_list = [] if nodes_list is None else nodes_list

@@ -7,7 +7,7 @@ class AVL(BST):
     def __init__(self, data) -> None:
         self.root = self.create_AVL_loop(data)
         # self.root = self.create_BT_loop(data)
-    
+
     def create_AVL_loop(self, data):
         '''
         Creates an AVL tree using an existing create_BT method. \n

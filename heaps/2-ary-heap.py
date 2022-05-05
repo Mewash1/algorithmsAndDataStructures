@@ -1,9 +1,11 @@
 from heap import AbstractHeap
 import copy
 
+
 class Heap(AbstractHeap):
-    def __init__(self, data = None):
+    def __init__(self, sons_quanity, data = None):
         self._heap = self._create_heap(data)
+        self._sons_quantity = sons_quanity
 
     def _create_heap(self, data):
         if data is None:
@@ -73,43 +75,41 @@ class Heap(AbstractHeap):
     # def __str__(self):
     #     self._print_heap()
 
-    def print_heap(self, data=None, padding=None, k=2, deep=None, first_element=True):
+    def print_heap(self, data=None, padding=None, k=None, first_element=True):
         data = copy.deepcopy(self._heap) if data is None else data
-        deep = self._count_deep(k) if deep is None else deep
+        sons_quanity = self._sons_quantity
+        k = sons_quanity if k is None else k
+        deep = self._count_deep(sons_quanity)
+
+        padding = self._give_padding(deep) if padding is None else padding
+        padding = padding // sons_quanity
         if first_element:
-            padding = self._give_padding(deep, k)
-            padding = padding//2
             print(padding * ' ', end='')
             print(data[0])
             data.pop(0)
         else:
-            padding //= 2
             print((padding)*' ', end='')
-            count_sons = 0
+            sons_count = 0
             for i in range(k):
-                count_sons += 1
+                sons_count += 1
                 if len(data) != 0:
                     print(data[0], end='')
-                    if count_sons % 2 != 0:
-                        print((2 * padding + 1) * ' ', end='')
-                    else:
-                        print((2 * padding + 1) * ' ', end='')
+                    print((2 * padding + 1) * ' ', end='')
                     data.pop(0)
                 else:
                     print('')
                     return
             print('')
             print('')
-            k *= 2
-        self._print_heap(data, padding, k, deep, False)
+            k *= sons_quanity
+        self.print_heap(data, padding, k, False)
 
     def _count_deep(self, k=2):
         data = copy.deepcopy(self._heap)
         deep = 1
         data.pop(0)
-
         while True:
-            deep +=1
+            deep += 1
             for i in range(k):
                 if len(data) != 0:
                     data.pop(0)
@@ -117,17 +117,18 @@ class Heap(AbstractHeap):
                     return deep
             k **= k
 
-
-
-    def _give_padding(self, deep, k=2):
+    def _give_padding(self, deep):
         deep -= 1
         padding = 0
+        k = self._sons_quantity
         for i in range(deep):
-            padding += k * 4
-            k = k**2
-        return padding
+            k *= self._sons_quantity
+            padding += k
 
-heap = Heap([1, 5, 4, 5, 8, 4, 3, 4, 3, 5, 4, 3, 2, 2, 5, 45, 3, 2, 4353, 3, 4, 4, 4, 5])
+        return padding * self._sons_quantity
+
+
+heap = Heap(2, [1, 5, 4, 5, 8, 4, 3, 4, 3, 5, 4, 3, 2, 2, 5, 45, 3, 2, 4353, 3, 4, 4, 4, 5])
 # print(heap.pop())
 # str(heap)
-heap._print_heap()
+heap.print_heap()

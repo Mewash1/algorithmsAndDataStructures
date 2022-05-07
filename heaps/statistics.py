@@ -7,13 +7,13 @@ class Sortings:
     '''Helps with detaling results'''
 
     def __init__(self) -> None:
-        self._sortings = ["create", "delete", "find"]
+        self._sortings = ["create", "pop"]
 
     def added_sorting(self, name):
         for sorting in self._sortings:
             if sorting in name:
                 self._sortings.remove(sorting)
-                return sorting + '_tree'
+                return sorting + '_heap'
         return None
 
 
@@ -53,11 +53,12 @@ def creating_dir_for_stats():
 def plot_reuslts(results: dict):
     '''Plots statistics'''
     creating_dir_for_stats()
-    amount = [1000, 2000, 3000, 4000, 5000]
-    ticks = [1000, 2000, 3000, 4000, 5000]
+    amount = [10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000]
+    ticks = [10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000]
     for name, values in results.items():
-        plt.plot(amount, values[:5], 'o-', label="BST")
-        plt.plot(amount, values[5:], 'o-', label="AVL")
+        plt.plot(amount, values[:10], 'o-', label="2-ary")
+        plt.plot(amount, values[10:20], 'o-', label="3-ary")
+        plt.plot(amount, values[20:], 'o-', label="4-ary")
         plt.legend()
         plt.xticks(ticks)
         plt.title(name)

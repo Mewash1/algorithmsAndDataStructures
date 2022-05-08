@@ -1,4 +1,4 @@
-from heap import AbstractHeap
+from .heap import AbstractHeap
 import copy
 
 

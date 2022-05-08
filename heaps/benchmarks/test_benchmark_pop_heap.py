@@ -4,7 +4,7 @@ from ..d_ary_heap import Heap
 @pytest.fixture
 def random_list():
     random_list = []
-    for _ in range(10000):
+    for _ in range(100000):
         random_list.append(random.randint(1, 30000))
     return random_list
 

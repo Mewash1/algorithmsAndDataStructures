@@ -1,4 +1,4 @@
-from .heap import AbstractHeap
+from heap import AbstractHeap
 import copy
 
 
@@ -75,29 +75,27 @@ class Heap(AbstractHeap):
         else:
             return None
 
-    #def __str__(self):
-    #    self._print_heap()
-
     def print_heap(self, data=None, padding=None, k=None, first_element=True):
         data = copy.deepcopy(self._heap) if data is None else data
         sons_quanity = self._sons_quantity
         k = sons_quanity if k is None else k
-        deep = self._count_deep(sons_quanity)
+        deep = self._count_deep()
 
         padding = self._give_padding(deep) if padding is None else padding
-        padding = padding // sons_quanity
+
         if first_element:
             print(padding * ' ', end='')
             print(data[0])
             data.pop(0)
         else:
+            padding = padding // sons_quanity
             print((padding)*' ', end='')
             sons_count = 0
             for i in range(k):
                 sons_count += 1
                 if len(data) != 0:
                     print(data[0], end='')
-                    print((2 * padding + 1) * ' ', end='')
+                    print((2 * padding - 1) * ' ', end='')
                     data.pop(0)
                 else:
                     print('')
@@ -107,8 +105,10 @@ class Heap(AbstractHeap):
             k *= sons_quanity
         self.print_heap(data, padding, k, False)
 
-    def _count_deep(self, k=2):
+    def _count_deep(self):
         data = copy.deepcopy(self._heap)
+        k = self._sons_quantity
+        sons_quanity = self._sons_quantity
         deep = 1
         data.pop(0)
         while True:
@@ -118,14 +118,29 @@ class Heap(AbstractHeap):
                     data.pop(0)
                 else:
                     return deep
-            k **= k
+            k *= sons_quanity
 
     def _give_padding(self, deep):
         deep -= 1
         padding = 0
         k = self._sons_quantity
         for i in range(deep):
-            k *= self._sons_quantity
+            k *= 2
             padding += k
+        padding = self._give_divisible_padding(padding)
 
-        return padding * self._sons_quantity
+        return padding
+
+    def _give_divisible_padding(self, padding):
+        sons_quantity = self._sons_quantity
+        elemnets = []
+        element = padding
+        while element != 0:
+            element = element // sons_quantity
+            elemnets.append(element)
+
+        new_padding = sons_quantity ** (len(elemnets) - 1)
+        if new_padding == padding:
+            return new_padding
+        else:
+            return new_padding * sons_quantity

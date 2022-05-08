@@ -66,3 +66,14 @@ def test_push_4_ary_heap():
     assert heap.get_raw_data() == [10,6,3,4,1,2,5]
     heap.push(7)
     assert heap.get_raw_data() == [10,7,3,4,1,2,5,6]
+
+def test_count_deep():
+    heap = Heap(2, [1, 2, 3, 4, 5, 6, 7, 5])
+    deep = heap._count_deep()
+    assert deep == 4
+    heap2 = Heap(3, [1, 2, 4, 5, 5, 3, 1, 5, 5])
+    deep2 = heap2._count_deep()
+    assert deep2 == 3
+    heap3 = Heap(4,[1, 2, 3, 4, 5, 6, 7, 5])
+    deep3 = heap3._count_deep()
+    assert deep3 == 3

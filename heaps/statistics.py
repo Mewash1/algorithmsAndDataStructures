@@ -18,7 +18,7 @@ class Sortings:
 
 
 def open_results():
-    with open("/home/miloszun/aisdi/heaps/results.json", 'r') as handle:
+    with open("results.json", 'r') as handle:
         reuslts = read_results(handle)
     return reuslts
 

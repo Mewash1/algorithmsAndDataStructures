@@ -77,3 +77,15 @@ def test_count_deep():
     heap3 = Heap(4,[1, 2, 3, 4, 5, 6, 7, 5])
     deep3 = heap3._count_deep()
     assert deep3 == 3
+
+def test_print_tree():
+    print('\n\nHeap 2-ary\n')
+    heap = Heap(2, [1, 2, 3, 4, 5, 6, 7, 5, 8])
+    heap.print_heap()
+    print('\n\nHeap 3-ary\n')
+    heap2 = Heap(3, [1, 2, 4, 5, 5, 3, 1, 5, 5, 6, 8, 8])
+    heap2.print_heap()
+    print('\n\nHeap 3-ary\n')
+    heap3 = Heap(4,[1, 2, 3, 4, 5, 6, 7, 5, 4, 5, 6, 7, 8])
+    print('\n\n\n')
+    heap3.print_heap()

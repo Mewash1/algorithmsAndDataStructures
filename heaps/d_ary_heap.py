@@ -107,18 +107,18 @@ class Heap(AbstractHeap):
 
     def _count_deep(self):
         data = copy.deepcopy(self._heap)
-        k = self._sons_quantity
+        sons_in_a_row = self._sons_quantity
         sons_quanity = self._sons_quantity
         deep = 1
         data.pop(0)
         while True:
             deep += 1
-            for i in range(k):
+            for i in range(sons_in_a_row):
                 if len(data) != 0:
                     data.pop(0)
                 else:
                     return deep
-            k *= sons_quanity
+            sons_in_a_row *= sons_quanity
 
     def _give_padding(self, deep):
         deep -= 1

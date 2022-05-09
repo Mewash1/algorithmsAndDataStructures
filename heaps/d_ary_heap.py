@@ -124,10 +124,10 @@ class Heap(AbstractHeap):
     def _give_padding(self, deep):
         deep -= 1
         padding = 0
-        k = self._sons_quantity
+        padding_multiplier = self._sons_quantity
         for i in range(deep):
-            k *= 2
-            padding += k
+            padding_multiplier *= 2
+            padding += padding_multiplier
         padding = self._give_divisible_padding(padding)
 
         return padding

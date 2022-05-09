@@ -1,4 +1,4 @@
-from .heap import AbstractHeap
+from heap import AbstractHeap
 import copy
 
 
@@ -37,7 +37,7 @@ class Heap(AbstractHeap):
                 data[index], data[self._sons_quantity * index + maximum[1]] = data[self._sons_quantity * index + maximum[1]], data[index]
             if not push:
                 self._heapify(data, self._sons_quantity * index + maximum[1])
-            else:
+            elif index != 0:
                 self._heapify(data, (index - 1) // self._sons_quantity)
 
     def _max_from_none(self, children):
@@ -61,9 +61,10 @@ class Heap(AbstractHeap):
 
     def push(self, value):
         self._heap.append(value)
-        value_index = len(self._heap) - 1
-        parent_index = (value_index - 1) // self._sons_quantity
-        self._heapify(self._heap, parent_index, True)
+        if len(self._heap) != 1:
+            value_index = len(self._heap) - 1
+            parent_index = (value_index - 1) // self._sons_quantity
+            self._heapify(self._heap, parent_index, True)
 
     def pop(self):
         if len(self._heap) != 0:

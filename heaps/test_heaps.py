@@ -89,3 +89,14 @@ def test_print_tree():
     heap3 = Heap(4,[1, 2, 3, 4, 5, 6, 7, 5, 4, 5, 6, 7, 8])
     print('\n\n\n')
     heap3.print_heap()
+
+def test_4_ary_heap_small_push():
+    heap = Heap(4, [3])
+    heap.push(4)
+    heap.push(5)
+    assert heap.get_raw_data() == [5,3,4]
+
+def test_push_empty():
+    heap = Heap()
+    heap.push(1)
+    assert heap.get_raw_data() == [1]

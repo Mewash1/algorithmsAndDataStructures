@@ -1,37 +1,28 @@
 def KR_search(pattern, text):
     pattern_index_in_text = 0
     patterns_in_text = []
-    found = False
-    prefix_index = 0
-    while pattern_index_in_text != (len(text) - 1):
-        patterns_in_text, found = prefix_pattern(pattern, text, pattern_index_in_text,
-                                                 patterns_in_text, found)
-    return patterns_in_text
+    if pattern == '' and text == '':
+        return patterns_in_text
+    while pattern_index_in_text <= (len(text)) - len(pattern):
+        prefix_index = pattern_index_in_text
+        prefix_len = 0
+        for i in range(len(pattern)):
+                pattern_letter = pattern[i]
+                text_letter = text[prefix_index]
+                if pattern_letter != text_letter:
+                    break
+                else:
+                    prefix_len += 1
+                    prefix_index += 1
+        else:
+            patterns_in_text.append(pattern_index_in_text)
+            pattern_index_in_text += 1
+            continue
+        prefix = text[pattern_index_in_text:prefix_index]
+        pre_su_fix = prefix_search(prefix)
+        pattern_index_in_text += prefix_len - pre_su_fix
 
-def prefix_pattern(pattern, text,
-                  pattern_index_in_text, patterns_in_text: list, found) -> bool:
-    prefix_index = pattern_index_in_text
-    prefix_len = 0
-    for i in range(len(pattern)-1):
-            pattern_letter = pattern[i]
-            text_letter = text[prefix_index]
-            if pattern_letter != text_letter:
-                break
-            else:
-                prefix_len += 1
-                prefix_index += 1
-    else:
-        patterns_in_text.append(pattern_index_in_text)
-        found = True
-        pattern_index_in_text += len(pattern)
-        patterns_in_text, found = prefix_pattern(pattern, text, pattern_index_in_text,
-                                                 patterns_in_text, found)
-    prefix = text[pattern_index_in_text:prefix_index]
-    pre_su_fix = prefix_search(prefix)
-    pattern_index_in_text += prefix_len - pre_su_fix
-    patterns_in_text, found = prefix_pattern(pattern, text, pattern_index_in_text,
-                                             patterns_in_text, found)
-    return pattern_index_in_text, found
+    return patterns_in_text
 
 
 def prefix_search(pattern) -> int:

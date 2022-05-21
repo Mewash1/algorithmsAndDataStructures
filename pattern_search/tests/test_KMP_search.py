@@ -14,29 +14,29 @@ def test_prefix_search():
 def test_KMP_search_easy():
     text = 'tralalatralatytrala'
     pattern = 'alal'
-    mathes = KMP_search(pattern, text)
-    assert mathes == [2]
+    matches = KMP_search(pattern, text)
+    assert matches == [2]
 
 
 def test_KMP_search_easy2():
     text = 'abababacababacacab'
     pattern = 'abababab'
-    mathes = KMP_search(pattern, text)
-    assert mathes == []
+    matches = KMP_search(pattern, text)
+    assert matches == []
 
 
 def test_KMP_search_easy3():
     text = 'abacabacababacacab'
     pattern = 'abacabab'
-    mathes = KMP_search(pattern, text)
-    assert mathes == [4]
+    matches = KMP_search(pattern, text)
+    assert matches == [4]
 
 
 def test_KMP_search_easy4():
     text = 'adacadadacadabacab'
     pattern = 'adacadab'
-    mathes = KMP_search(pattern, text)
-    assert mathes == [6]
+    matches = KMP_search(pattern, text)
+    assert matches == [6]
 
 
 def test_empty_strings():

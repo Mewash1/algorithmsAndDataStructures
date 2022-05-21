@@ -1,7 +1,7 @@
 def KMP_search(pattern, text):
     pattern_index_in_text = 0
     patterns_in_text = []
-    if pattern == '' and text == '':
+    if pattern == '' or text == '':
         return patterns_in_text
     while pattern_index_in_text <= (len(text)) - len(pattern):
         prefix_index = pattern_index_in_text

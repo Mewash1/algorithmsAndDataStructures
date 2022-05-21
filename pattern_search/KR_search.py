@@ -2,8 +2,7 @@ def KR_search(pattern, text):
     length = len(text) - len(pattern)
     # stores indexes where pattern is in text
     pattern_in_text = []
-    if (length < 0 or
-       (len(pattern) == 0 and len(text) == 0)):
+    if (length < 0 or len(pattern) == 0 or len(text) == 0):
         return pattern_in_text
     pattern_hash = hash(pattern)
     for i in range(length+1):

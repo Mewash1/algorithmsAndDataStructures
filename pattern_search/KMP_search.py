@@ -1,17 +1,15 @@
-from black import out
-
-
 def KMP_search(pattern, text):
     prefix_dict = make_prefix_dict(pattern)
-    pattern_start_in_text = 0
     patterns_in_text = []
     if pattern == '' or text == '':
         return patterns_in_text
     prefix = ''
     pre_su_fix = 0
+    pattern_start_in_text = 0
     pattern_end_in_text = 0
+
     while pattern_start_in_text <= (len(text)) - len(pattern):
-        for i in range(len(pattern)-pre_su_fix):
+        for i in range(len(pattern) - pre_su_fix):
 
                 index_in_pattern = pattern_end_in_text - pattern_start_in_text
                 pattern_letter = pattern[index_in_pattern]
@@ -24,19 +22,18 @@ def KMP_search(pattern, text):
             patterns_in_text.append(pattern_start_in_text)
             pattern_start_in_text += 1
             pattern_end_in_text = pattern_start_in_text
-            prefix = ''
             pre_su_fix = 0
             continue
+
         prefix = text[pattern_start_in_text:pattern_end_in_text]
         pre_su_fix = prefix_dict[prefix]
         prefix_len = len(prefix)
 
         pattern_start_in_text += prefix_len - pre_su_fix
+
         if pre_su_fix == -1:
             pattern_end_in_text = pattern_start_in_text
             pre_su_fix = 0
-        else:
-            pattern_end_in_text = pattern_start_in_text + pre_su_fix
 
     return patterns_in_text
 

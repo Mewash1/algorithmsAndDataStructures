@@ -20,13 +20,15 @@ def find_n_words(n, type):
         2 = KMP_search
     '''
     patterns = pan_tadeusz[:n]
+    pattern_string = ""
     for pattern in patterns:
+        pattern_string = pattern_string + pattern + " "
         if type == 0:
-            naive_search(pattern, tadeusz_text)
+            naive_search(pattern_string, tadeusz_text)
         elif type == 1:
-            KR_search(pattern, tadeusz_text)
+            KR_search(pattern_string, tadeusz_text)
         elif type == 2:
-            KMP_search(pattern, tadeusz_text)
+            KMP_search(pattern_string, tadeusz_text)
 
 
 def test_benchmark_naive_find_10(benchmark):

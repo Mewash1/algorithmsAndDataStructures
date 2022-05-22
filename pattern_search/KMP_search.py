@@ -1,37 +1,42 @@
+from black import out
+
+
 def KMP_search(pattern, text):
-    pattern_index_in_text = 0
+    prefix_dict = make_prefix_dict(pattern)
+    pattern_start_in_text = 0
     patterns_in_text = []
     if pattern == '' or text == '':
         return patterns_in_text
-    while pattern_index_in_text <= (len(text)) - len(pattern):
-        prefix_index = pattern_index_in_text
-        prefix_len = 0
-        for i in range(len(pattern)):
-                pattern_letter = pattern[i]
-                text_letter = text[prefix_index]
+    prefix = ''
+    pre_su_fix = 0
+    pattern_end_in_text = 0
+    while pattern_start_in_text <= (len(text)) - len(pattern):
+        for i in range(len(pattern)-pre_su_fix):
+
+                index_in_pattern = pattern_end_in_text - pattern_start_in_text
+                pattern_letter = pattern[index_in_pattern]
+                text_letter = text[pattern_end_in_text]
                 if pattern_letter != text_letter:
                     break
                 else:
-                    prefix_len += 1
-                    prefix_index += 1
+                    pattern_end_in_text += 1
         else:
-            patterns_in_text.append(pattern_index_in_text)
-            pattern_index_in_text += 1
+            patterns_in_text.append(pattern_start_in_text)
+            pattern_start_in_text += 1
+            pattern_end_in_text = pattern_start_in_text
+            prefix = ''
+            pre_su_fix = 0
             continue
-        prefix = text[pattern_index_in_text:prefix_index]
-        pre_su_fix = prefix_search(prefix)
-        pattern_try_letter = pattern[pre_su_fix]
+        prefix = text[pattern_start_in_text:pattern_end_in_text]
+        pre_su_fix = prefix_dict[prefix]
+        prefix_len = len(prefix)
 
-        # Cheking next letter of the pattern, after a "prefix move",
-        # with last not matching letter of the text
-        while pattern_try_letter != text_letter and pre_su_fix > 0:
-            prefix = pattern[:pre_su_fix]
-            pre_su_fix = prefix_search(prefix)
-            pattern_try_letter = pattern[pre_su_fix]
-
-
-        pattern_index_in_text += prefix_len - pre_su_fix
-
+        pattern_start_in_text += prefix_len - pre_su_fix
+        if pre_su_fix == -1:
+            pattern_end_in_text = pattern_start_in_text
+            pre_su_fix = 0
+        else:
+            pattern_end_in_text = pattern_start_in_text + pre_su_fix
 
     return patterns_in_text
 
@@ -51,6 +56,23 @@ def prefix_search(pattern) -> int:
     return 0
 
 
+def make_prefix_dict(pattern):
+    prefix_dict = {}
+    prefix_dict[''] = -1
+    for i in range(1, len(pattern)+1):
+        prefix = pattern[:i]
+        outcome = prefix_search(prefix)
+        if i < len(pattern):
+            wrong_letter = pattern[i]
+            match_letter = prefix[outcome]
+            if wrong_letter == match_letter:
+                if outcome == 0:
+                    outcome2 = -1
+                else:
+                    outcome2 = prefix_dict[prefix[:outcome]]
 
+                outcome = outcome2
+        prefix_dict[prefix] = outcome
+    return prefix_dict
 
 

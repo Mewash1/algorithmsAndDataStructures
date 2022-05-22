@@ -1,41 +1,27 @@
 def KMP_search(pattern, text):
-    prefix_dict = make_prefix_dict(pattern)
-    patterns_in_text = []
+    found_patterns = []
     if pattern == '' or text == '':
-        return patterns_in_text
-    prefix = ''
-    pre_su_fix = 0
-    pattern_start_in_text = 0
-    pattern_end_in_text = 0
+        return found_patterns
+    pattern_len = len(pattern)
+    text_len = len(text)
+    prefix_dict = make_prefix_dict(pattern)
+    index_txt = 0
+    index_pattern = 0
+    while index_txt < text_len:
+        if pattern[index_pattern] == text[index_txt]:
+            index_txt += 1
+            index_pattern += 1
 
-    while pattern_start_in_text <= (len(text)) - len(pattern):
-        for i in range(len(pattern) - pre_su_fix):
-
-                index_in_pattern = pattern_end_in_text - pattern_start_in_text
-                pattern_letter = pattern[index_in_pattern]
-                text_letter = text[pattern_end_in_text]
-                if pattern_letter != text_letter:
-                    break
-                else:
-                    pattern_end_in_text += 1
-        else:
-            patterns_in_text.append(pattern_start_in_text)
-            pattern_start_in_text += 1
-            pattern_end_in_text = pattern_start_in_text
-            pre_su_fix = 0
-            continue
-
-        prefix = text[pattern_start_in_text:pattern_end_in_text]
-        pre_su_fix = prefix_dict[prefix]
-        prefix_len = len(prefix)
-
-        pattern_start_in_text += prefix_len - pre_su_fix
-
-        if pre_su_fix == -1:
-            pattern_end_in_text = pattern_start_in_text
-            pre_su_fix = 0
-
-    return patterns_in_text
+        if index_pattern == pattern_len:
+            found_pattern = index_txt - index_pattern
+            found_patterns.append(found_pattern)
+            index_pattern = prefix_dict[index_pattern]
+        elif index_txt < text_len and pattern[index_pattern] != text[index_txt]:
+            if index_pattern != 0:
+                index_pattern = prefix_dict[index_pattern]
+            else:
+                index_txt += 1
+    return found_patterns
 
 
 def prefix_search(pattern) -> int:
@@ -55,21 +41,11 @@ def prefix_search(pattern) -> int:
 
 def make_prefix_dict(pattern):
     prefix_dict = {}
-    prefix_dict[''] = -1
+    prefix_dict[0] = 0
     for i in range(1, len(pattern)+1):
         prefix = pattern[:i]
         outcome = prefix_search(prefix)
-        if i < len(pattern):
-            wrong_letter = pattern[i]
-            match_letter = prefix[outcome]
-            if wrong_letter == match_letter:
-                if outcome == 0:
-                    outcome2 = -1
-                else:
-                    outcome2 = prefix_dict[prefix[:outcome]]
-
-                outcome = outcome2
-        prefix_dict[prefix] = outcome
+        prefix_dict[i] = outcome
     return prefix_dict
 
 

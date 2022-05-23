@@ -24,7 +24,7 @@ def find_n_words(n, type):
         if type == 0:
             naive_search(pattern, tadeusz_text)
         elif type == 1:
-            KR_search(pattern, tadeusz_text)
+            KR_search(pattern, tadeusz_text, 23)
         elif type == 2:
             KMP_search(pattern, tadeusz_text)
 
@@ -32,11 +32,11 @@ def find_n_words(n, type):
 def test_benchmark_naive_find_10(benchmark):
     benchmark(find_n_words, 10, 0)
 
-def test_benchmark_naive_find_20(benchmark):
-    benchmark(find_n_words, 20, 0)
+# def test_benchmark_naive_find_20(benchmark):
+#     benchmark(find_n_words, 20, 0)
 
-def test_benchmark_naive_find_30(benchmark):
-    benchmark(find_n_words, 30, 0)
+# def test_benchmark_naive_find_30(benchmark):
+#     benchmark(find_n_words, 30, 0)
 
 '''def test_benchmark_naive_find_40(benchmark):
     benchmark(find_n_words, 40, 0)
@@ -64,11 +64,11 @@ def test_benchmark_naive_find_100(benchmark):
 def test_benchmark_KR_find_10(benchmark):
     benchmark(find_n_words, 10, 1)
 
-def test_benchmark_KR_find_20(benchmark):
-    benchmark(find_n_words, 20, 1)
+# def test_benchmark_KR_find_20(benchmark):
+#     benchmark(find_n_words, 20, 1)
 
-def test_benchmark_KR_find_30(benchmark):
-    benchmark(find_n_words, 30, 1)
+# def test_benchmark_KR_find_30(benchmark):
+#     benchmark(find_n_words, 30, 1)
 
 '''def test_benchmark_KR_find_40(benchmark):
     benchmark(find_n_words, 40, 1)
@@ -97,11 +97,11 @@ def test_benchmark_KR_find_100(benchmark):
 def test_benchmark_KMP_find_10(benchmark):
     benchmark(find_n_words, 10, 2)
 
-def test_benchmark_KMP_find_20(benchmark):
-    benchmark(find_n_words, 20, 2)
+# def test_benchmark_KMP_find_20(benchmark):
+#     benchmark(find_n_words, 20, 2)
 
-def test_benchmark_KMP_find_30(benchmark):
-    benchmark(find_n_words, 30, 2)
+# def test_benchmark_KMP_find_30(benchmark):
+#     benchmark(find_n_words, 30, 2)
 
 '''def test_benchmark_KMP_find_40(benchmark):
     benchmark(find_n_words, 40, 2)

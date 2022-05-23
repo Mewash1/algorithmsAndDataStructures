@@ -9,11 +9,6 @@ def naive_search(pattern, text) -> Tuple[bool, list]:
         return pattern_in_text
     for i in range(length+1):
         try_pattern = text[i:len(pattern)+i]
-        for j in range(len(pattern)):
-            pattern_letter = pattern[j]
-            try_pattern_letter = try_pattern[j]
-            if pattern_letter != try_pattern_letter:
-                break
-        else:
+        if try_pattern == pattern:
             pattern_in_text.append(i)
     return pattern_in_text

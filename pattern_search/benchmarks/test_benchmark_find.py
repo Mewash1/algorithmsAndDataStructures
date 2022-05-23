@@ -24,7 +24,7 @@ def find_n_words(n, type):
         if type == 0:
             naive_search(pattern, tadeusz_text)
         elif type == 1:
-            KR_search(pattern, tadeusz_text, 23)
+            KR_search(pattern, tadeusz_text, 197, 256)
         elif type == 2:
             KMP_search(pattern, tadeusz_text)
 

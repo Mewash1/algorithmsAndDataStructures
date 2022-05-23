@@ -1,6 +1,6 @@
 import random, pytest, json, copy
 from ..d_ary_heap import Heap
-with open("list.json", 'r') as file:
+with open("~/aisdi/heaps/benchmarks/list.json", 'r') as file:
     random_list = json.load(file)
 
 

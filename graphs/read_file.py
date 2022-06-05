@@ -16,4 +16,12 @@ def read_nodes_from_file(filename):
             if enter_cost == 0:
                 has_been_zero = True
             nodes_list.append(Node(enter_cost, i, end))
-    return nodes_list, nodes, line_length            
+    if not has_been_zero:
+        raise ValueError("There are no zeroes in the input file!")
+    if len(nodes_list) == 0:
+        raise ValueError("The graph is empty!")
+    for node in nodes_list:
+        if node.end:
+            return nodes_list, nodes, line_length
+    raise ValueError("There is only one zero in the input file!")
+       

@@ -29,7 +29,7 @@ def test_compare():
         text = random_text()
         pattern = random_pattern()
         N_list = naive_search(pattern, text)
-        KR_list = KR_search(pattern, text)
+        KR_list = KR_search(pattern, text, 2, 2)
         KMP_list = KMP_search(pattern, text)
         assert N_list == KR_list
         assert N_list == KMP_list

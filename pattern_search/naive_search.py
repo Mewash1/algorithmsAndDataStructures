@@ -9,11 +9,8 @@ def naive_search(pattern, text) -> Tuple[bool, list]:
     if (length < 0 or len(pattern) == 0 or len(text) == 0):
         return pattern_in_text
     for i in range(length+1):
-        for j in range(len(pattern)):
-            if pattern[j] != text[i+j]:
-                check = False
-                break
-        if check:
+        try_pattern = text[i:len(pattern)+i]
+        if try_pattern == pattern:
             pattern_in_text.append(i)
         check = True
     return pattern_in_text

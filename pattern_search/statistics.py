@@ -53,16 +53,16 @@ def creating_dir_for_stats():
 def plot_reuslts(results: dict):
     '''Plots statistics'''
     creating_dir_for_stats()
-    amount = [10, 20, 30]
+    amount = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     ticks = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     for name, values in results.items():
-        plt.plot(amount, values[:3], 'o-', label="naive")
-        plt.plot(amount, values[3:6], 'o-', label="KR")
-        plt.plot(amount, values[6:], 'o-', label="KMP")
+        plt.plot(amount, values[:10], 'o-', label="naive")
+        plt.plot(amount, values[10:20], 'o-', label="KR")
+        plt.plot(amount, values[20:], 'o-', label="KMP")
         plt.legend()
         plt.xticks(ticks)
         plt.title(name)
-        plt.ylabel('miliseconds')
+        plt.ylabel('seconds')
         plt.xlabel('number of elements')
         plt.savefig(f'statistics/{name}.png', format='png')
         #plt.clf()

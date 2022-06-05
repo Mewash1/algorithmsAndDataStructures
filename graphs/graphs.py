@@ -1,3 +1,4 @@
+import sys
 from heap.d_ary_heap import Heap
 from read_file import read_nodes_from_file
 
@@ -9,27 +10,31 @@ def calculate_distance_and_predecessor_for_each_node(nodes, line_length):
     while len(nodes_heap.get_raw_data()) != 0:
         min_node = nodes_heap.pop()
         neighbours = []
-        try:
-            if (min_node.index + 1) % line_length != 0:
+
+        if (min_node.index + 1) % line_length != 0:
+            try:
                 right_neighbour = nodes[min_node.index + 1]
-            else:
+            except IndexError:
                 right_neighbour = None
-        except IndexError:
+        else:
             right_neighbour = None
-        try:
-            if (min_node.index) % line_length != 0 and min_node.index - 1 >= 0:
+        
+        if (min_node.index) % line_length != 0 and min_node.index - 1 >= 0:
+            try:
                 left_neighbour = nodes[min_node.index - 1]
-            else:
+            except IndexError:
                 left_neighbour = None
-        except IndexError:
+        else:
             left_neighbour = None
-        try:
-            if min_node.index - line_length >= 0:
+
+        if min_node.index - line_length >= 0:
+            try:
                 upper_neighbour = nodes[min_node.index - line_length]
-            else:
+            except IndexError:
                 upper_neighbour = None
-        except IndexError:
+        else:
             upper_neighbour = None
+
         try:
             bottom_neighbour = nodes[min_node.index + line_length]
         except IndexError:
@@ -47,11 +52,15 @@ def calculate_distance_and_predecessor_for_each_node(nodes, line_length):
 
 def shortest_path(nodes):
     shortest_path_list = set()
+    pre_node = None
     for node in nodes:
         if node.end:
             node.enter_cost = 0
             pre_node = node
             break
+    
+    if pre_node is None:
+        raise ValueError("The input does not include 2 zeroes")
 
     while True:
         shortest_path_list.add(pre_node.index)
@@ -76,10 +85,12 @@ def generate_path_on_board(board, shortest_path_list):
     return final_board
 
 if __name__ == "__main__":
-    filename = "/home/miloszun/AISDI/aisdi/graphs/graf4.txt"
+    filename = sys.argv[1]
     nodes, board, line_length = read_nodes_from_file(filename)
-    calculate_distance_and_predecessor_for_each_node(nodes, line_length)
-    shortest_path_list = shortest_path(nodes)
-    final_board = generate_path_on_board(board, shortest_path_list)
-
-    print(final_board)
+    if len(nodes) != 0:
+        calculate_distance_and_predecessor_for_each_node(nodes, line_length)
+        shortest_path_list = shortest_path(nodes)
+        final_board = generate_path_on_board(board, shortest_path_list)
+        print(final_board)
+    else:
+        print("The graph is empty!")

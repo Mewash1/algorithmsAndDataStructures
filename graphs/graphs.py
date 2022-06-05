@@ -51,31 +51,28 @@ def calculate_distance_and_predecessor_for_each_node(nodes, line_length):
     return nodes
 
 def shortest_path(nodes):
-    shortest_path_list = set()
+    shortest_path_set = set()
     pre_node = None
     for node in nodes:
         if node.end:
             node.enter_cost = 0
             pre_node = node
             break
-    
-    if pre_node is None:
-        raise ValueError("The input does not include 2 zeroes")
 
     while True:
-        shortest_path_list.add(pre_node.index)
+        shortest_path_set.add(pre_node.index)
         pre_node = nodes[pre_node.predecessor]
         if pre_node.enter_cost == 0:
-            shortest_path_list.add(pre_node.index)
+            shortest_path_set.add(pre_node.index)
             break
-    return shortest_path_list
+    return shortest_path_set
 
-def generate_path_on_board(board, shortest_path_list):
+def generate_path_on_board(board, shortest_path_set):
     i = 0
     final_board = ""
     for char in board:
         if char != "\n":
-            if i in shortest_path_list:
+            if i in shortest_path_set:
                 final_board += char
             else:
                 final_board += " "
@@ -89,8 +86,6 @@ if __name__ == "__main__":
     nodes, board, line_length = read_nodes_from_file(filename)
     if len(nodes) != 0:
         calculate_distance_and_predecessor_for_each_node(nodes, line_length)
-        shortest_path_list = shortest_path(nodes)
-        final_board = generate_path_on_board(board, shortest_path_list)
+        shortest_path_set = shortest_path(nodes)
+        final_board = generate_path_on_board(board, shortest_path_set)
         print(final_board)
-    else:
-        print("The graph is empty!")

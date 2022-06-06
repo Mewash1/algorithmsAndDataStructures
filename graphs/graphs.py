@@ -9,6 +9,8 @@ def calculate_distance_and_predecessor_for_each_node(nodes, line_length):
 
     while len(nodes_heap) != 0:
         min_node = nodes_heap.pop()
+        if min_node.end:
+            return nodes
         neighbours = generate_neighbours(min_node, nodes, line_length)
 
         for neighbour in neighbours:
@@ -17,8 +19,7 @@ def calculate_distance_and_predecessor_for_each_node(nodes, line_length):
                     neighbour.distance = min_node.distance + neighbour.enter_cost
                     neighbour.predecessor = min_node.index
         nodes_heap = Heap(4, nodes_for_heap)
-        if min_node.end:
-            return nodes
+        
 
 def generate_neighbours(min_node, nodes, line_length):
     neighbours = [None, None, None, None]

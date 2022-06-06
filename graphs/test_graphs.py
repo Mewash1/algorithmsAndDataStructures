@@ -30,7 +30,7 @@ def test_calculate_predecessors_and_distances():
     filename = "inputs/graf2.txt"
     nodes, board, line_length = read_nodes_from_file(filename)
     calculate_distance_and_predecessor_for_each_node(nodes, line_length)
-    test_predecessors = [1, 2, -1, 0, 5, 2]
+    test_predecessors = [1, 2, -1, 0, 1, 2]
     test_distances = [2, 1, 0, 3, 3, 1]
     for i, node in enumerate(nodes):
         assert node.predecessor == test_predecessors[i]

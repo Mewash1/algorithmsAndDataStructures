@@ -7,48 +7,50 @@ def calculate_distance_and_predecessor_for_each_node(nodes, line_length):
     nodes_for_heap = nodes.copy()
     nodes_heap = Heap(4, nodes_for_heap)
 
-    while len(nodes_heap.get_raw_data()) != 0:
+    while len(nodes_heap) != 0:
         min_node = nodes_heap.pop()
-        neighbours = []
+        neighbours = generate_neighbours(min_node, nodes, line_length)
 
-        if (min_node.index + 1) % line_length != 0:
-            try:
-                right_neighbour = nodes[min_node.index + 1]
-            except IndexError:
-                right_neighbour = None
-        else:
-            right_neighbour = None
-        
-        if (min_node.index) % line_length != 0 and min_node.index - 1 >= 0:
-            try:
-                left_neighbour = nodes[min_node.index - 1]
-            except IndexError:
-                left_neighbour = None
-        else:
-            left_neighbour = None
-
-        if min_node.index - line_length >= 0:
-            try:
-                upper_neighbour = nodes[min_node.index - line_length]
-            except IndexError:
-                upper_neighbour = None
-        else:
-            upper_neighbour = None
-
-        try:
-            bottom_neighbour = nodes[min_node.index + line_length]
-        except IndexError:
-            bottom_neighbour = None
-
-        neighbours = [right_neighbour, left_neighbour, upper_neighbour, bottom_neighbour]
         for neighbour in neighbours:
             if neighbour:
                 if neighbour.distance > min_node.distance + neighbour.enter_cost:
                     neighbour.distance = min_node.distance + neighbour.enter_cost
                     neighbour.predecessor = min_node.index
-                    nodes_heap = Heap(4, nodes_for_heap)
+        nodes_heap = Heap(4, nodes_for_heap)
+        if min_node.end:
+            return nodes
+
+def generate_neighbours(min_node, nodes, line_length):
+    neighbours = [None, None, None, None]
+
+    # right neighbour
+    if (min_node.index + 1) % line_length != 0:
+        try:
+            neighbours[0] = nodes[min_node.index + 1]
+        except IndexError:
+            pass
     
-    return nodes
+    # left neighbour
+    if (min_node.index) % line_length != 0 and min_node.index - 1 >= 0:
+        try:
+            neighbours[1] = nodes[min_node.index - 1]
+        except IndexError:
+            pass
+
+    # upper neighbour
+    if min_node.index - line_length >= 0:
+        try:
+            neighbours[2] = nodes[min_node.index - line_length]
+        except IndexError:
+            pass
+    
+    # bottom neighbour
+    try:
+        neighbours[3] = nodes[min_node.index + line_length]
+    except IndexError:
+        pass
+    
+    return neighbours
 
 def shortest_path(nodes):
     shortest_path_set = set()
